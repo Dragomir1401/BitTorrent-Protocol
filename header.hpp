@@ -32,6 +32,15 @@ enum action
     FINALIZE
 };
 
+// Enum for download and upload tags
+enum tag
+{
+    INIT,
+    COMMANDS,
+    DOWNLOAD,
+    UPLOAD
+};
+
 void tracker(
     int numtasks,
     int rank);
@@ -48,7 +57,8 @@ void download_thread_func(
 
 void upload_thread_func(
     int rank,
-    peer_info *input);
+    peer_info *input,
+    distribution_center *dc);
 
 peer_info *read_peer_input(
     int rank);

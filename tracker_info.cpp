@@ -68,3 +68,26 @@ void tracker_info::add_segments(
         this->segments_contained_in_file[filename].push_back(segments[i]);
     }
 }
+
+void tracker_info::print()
+{
+    cout << "Tracker info:" << endl;
+    for (auto &file : this->file_to_peers_owning_it)
+    {
+        cout << "File: " << file.first << endl;
+
+        swarm_info swarm = file.second;
+        map<int, vector<string>> client_list_and_segments_owned = swarm.get_client_list_and_segments_owned();
+
+        cout << "Peers owning it: " << endl;
+        for (auto &client : client_list_and_segments_owned)
+        {
+            cout << "Client id: " << client.first << endl;
+            cout << "Segments owned: " << endl;
+            for (auto &segment : client.second)
+            {
+                cout << segment << endl;
+            }
+        }
+    }
+}

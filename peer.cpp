@@ -8,7 +8,7 @@ void send_num_files(
         1,
         MPI_INT,
         TRACKER_RANK,
-        0,
+        tag::INIT,
         MPI_COMM_WORLD);
 }
 
@@ -23,7 +23,7 @@ void send_segments(
             segment.size() + 1,
             MPI_CHAR,
             TRACKER_RANK,
-            0,
+            tag::INIT,
             MPI_COMM_WORLD);
     }
 }
@@ -39,7 +39,7 @@ void send_each_file_owned(
             file.first.size() + 1,
             MPI_CHAR,
             TRACKER_RANK,
-            0,
+            tag::INIT,
             MPI_COMM_WORLD);
 
         // Then send the number of segments
@@ -49,7 +49,7 @@ void send_each_file_owned(
             1,
             MPI_INT,
             TRACKER_RANK,
-            0,
+            tag::INIT,
             MPI_COMM_WORLD);
 
         // Then send each segment
@@ -66,7 +66,7 @@ void receive_ack(
         4,
         MPI_CHAR,
         TRACKER_RANK,
-        0,
+        tag::INIT,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 
@@ -100,8 +100,8 @@ void peer(
     }
 
     thread download_thread(download_thread_func, rank, input, dc);
-    // thread upload_thread(upload_thread_func, rank);
+    thread upload_thread(upload_thread_func, rank, input, dc);
 
     download_thread.join();
-    // upload_thread.join();
+    upload_thread.join();
 }

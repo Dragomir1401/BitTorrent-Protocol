@@ -2,14 +2,15 @@
 
 void receive_filename(
     char *filename,
-    int from)
+    int from,
+    tag tag)
 {
     MPI_Recv(
         filename,
         MAX_FILENAME,
         MPI_CHAR,
         from,
-        0,
+        tag,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 }
@@ -23,7 +24,7 @@ void receive_num_segments(
         1,
         MPI_INT,
         from,
-        0,
+        tag::INIT,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 }
@@ -36,7 +37,7 @@ void receive_segments(
     for (int j = 0; j < num_segments; j++)
     {
         MPI_Status status;
-        MPI_Probe(from, 0, MPI_COMM_WORLD, &status);
+        MPI_Probe(from, tag::INIT, MPI_COMM_WORLD, &status);
 
         int segment_size;
         MPI_Get_count(&status, MPI_CHAR, &segment_size);
@@ -48,7 +49,7 @@ void receive_segments(
             segment_size,
             MPI_CHAR,
             from,
-            0,
+            tag::INIT,
             MPI_COMM_WORLD,
             MPI_STATUS_IGNORE);
 
@@ -95,7 +96,7 @@ void send_acks(
             4,
             MPI_CHAR,
             i,
-            0,
+            tag::INIT,
             MPI_COMM_WORLD);
     }
 }
@@ -111,7 +112,7 @@ int recv_command(
         1,
         MPI_INT,
         MPI_ANY_SOURCE,
-        MPI_ANY_TAG,
+        tag::COMMANDS,
         MPI_COMM_WORLD,
         &status);
 
@@ -132,7 +133,7 @@ void send_segments(
             segment.size() + 1,
             MPI_CHAR,
             dest,
-            0,
+            tag::COMMANDS,
             MPI_COMM_WORLD);
     }
 }
@@ -145,7 +146,7 @@ void send_info_about_file_structure(int number_of_segments, vector<string> segme
         1,
         MPI_INT,
         dest,
-        0,
+        tag::COMMANDS,
         MPI_COMM_WORLD);
 
     // Send all segments that compose the file
@@ -158,7 +159,7 @@ void handle_request(
 {
     // Receive the filename
     char *filename = (char *)malloc(MAX_FILENAME * sizeof(char));
-    receive_filename(filename, source);
+    receive_filename(filename, source, tag::COMMANDS);
     string filename_string(filename);
 
     // Send back to the source the swarm info for the requested file
@@ -178,7 +179,7 @@ void handle_request(
         1,
         MPI_INT,
         source,
-        0,
+        tag::COMMANDS,
         MPI_COMM_WORLD);
 
     // Send the client list and segments owned
@@ -191,7 +192,7 @@ void handle_request(
             1,
             MPI_INT,
             source,
-            0,
+            tag::COMMANDS,
             MPI_COMM_WORLD);
 
         // Send the number of segments owned
@@ -201,7 +202,7 @@ void handle_request(
             1,
             MPI_INT,
             source,
-            0,
+            tag::COMMANDS,
             MPI_COMM_WORLD);
 
         // Send all segments owned by the respective client
@@ -222,7 +223,7 @@ void receive_initial_holders(
             1,
             MPI_INT,
             i,
-            0,
+            tag::INIT,
             MPI_COMM_WORLD,
             MPI_STATUS_IGNORE);
 
@@ -231,7 +232,7 @@ void receive_initial_holders(
         {
             // Receive the file name
             char *filename = (char *)malloc(MAX_FILENAME * sizeof(char));
-            receive_filename(filename, i);
+            receive_filename(filename, i, tag::INIT);
             string filename_string(filename);
 
             // Receive the number of segments

@@ -10,7 +10,7 @@ void request(
         1,
         MPI_INT,
         TRACKER_RANK,
-        0,
+        tag::COMMANDS,
         MPI_COMM_WORLD);
 
     // Then send the filename for the requested file
@@ -19,7 +19,7 @@ void request(
         file.size() + 1,
         MPI_CHAR,
         TRACKER_RANK,
-        0,
+        tag::COMMANDS,
         MPI_COMM_WORLD);
 }
 
@@ -34,7 +34,7 @@ void receive_segments_owned(
         1,
         MPI_INT,
         TRACKER_RANK,
-        0,
+        tag::COMMANDS,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 
@@ -42,7 +42,7 @@ void receive_segments_owned(
     for (int i = 0; i < num_segments_owned; i++)
     {
         MPI_Status status;
-        MPI_Probe(TRACKER_RANK, 0, MPI_COMM_WORLD, &status);
+        MPI_Probe(TRACKER_RANK, tag::COMMANDS, MPI_COMM_WORLD, &status);
 
         int segment_size;
         MPI_Get_count(&status, MPI_CHAR, &segment_size);
@@ -54,7 +54,7 @@ void receive_segments_owned(
             segment_size,
             MPI_CHAR,
             TRACKER_RANK,
-            0,
+            tag::COMMANDS,
             MPI_COMM_WORLD,
             MPI_STATUS_IGNORE);
 
@@ -72,7 +72,7 @@ void receive_file_structure(vector<string> &segments_contained)
         1,
         MPI_INT,
         TRACKER_RANK,
-        0,
+        tag::COMMANDS,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 
@@ -80,7 +80,7 @@ void receive_file_structure(vector<string> &segments_contained)
     for (int i = 0; i < num_segments; i++)
     {
         MPI_Status status;
-        MPI_Probe(TRACKER_RANK, 0, MPI_COMM_WORLD, &status);
+        MPI_Probe(TRACKER_RANK, tag::COMMANDS, MPI_COMM_WORLD, &status);
 
         int segment_size;
         MPI_Get_count(&status, MPI_CHAR, &segment_size);
@@ -92,7 +92,7 @@ void receive_file_structure(vector<string> &segments_contained)
             segment_size,
             MPI_CHAR,
             TRACKER_RANK,
-            0,
+            tag::COMMANDS,
             MPI_COMM_WORLD,
             MPI_STATUS_IGNORE);
 
@@ -112,7 +112,7 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
         1,
         MPI_INT,
         TRACKER_RANK,
-        0,
+        tag::COMMANDS,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 
@@ -127,7 +127,7 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
             1,
             MPI_INT,
             TRACKER_RANK,
-            0,
+            tag::COMMANDS,
             MPI_COMM_WORLD,
             MPI_STATUS_IGNORE);
 
@@ -138,7 +138,48 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
     return client_list_and_segments_owned;
 }
 
-int find_best_client(
+void request_segment_from_best_client(
+    int best_client_id,
+    string segment)
+{
+    // Send an MPI message with a GET action
+    int action = action::REQUEST;
+    MPI_Send(
+        &action,
+        1,
+        MPI_INT,
+        best_client_id,
+        tag::DOWNLOAD,
+        MPI_COMM_WORLD);
+
+    // Then send the segment
+    MPI_Send(
+        segment.c_str(),
+        segment.size() + 1,
+        MPI_CHAR,
+        best_client_id,
+        tag::DOWNLOAD,
+        MPI_COMM_WORLD);
+}
+
+void receive_requested_segment(int best_client_id, distribution_center *dc)
+{
+    // Receive ACK from the best client
+    char *ack = (char *)malloc(4 * sizeof(char));
+    MPI_Recv(
+        ack,
+        4,
+        MPI_CHAR,
+        best_client_id,
+        tag::UPLOAD,
+        MPI_COMM_WORLD,
+        MPI_STATUS_IGNORE);
+
+    // Remove the request from the distribution center
+    dc->remove_request(best_client_id);
+}
+
+void find_best_client(
     vector<string> segments_contained,
     map<int, vector<string>> client_list_and_segments_owned,
     string file,
@@ -146,8 +187,6 @@ int find_best_client(
     distribution_center *dc)
 {
     vector<string> segmentsDownloaded = peer_info_local->get_segments_downloaded(file);
-    int min_workload = INT_MAX;
-    int best_client_id = -1;
 
     // For each segment that the client wants and does not own
     // Find the client with the least workload to download from
@@ -157,6 +196,9 @@ int find_best_client(
         // If the segment is not already downloaded
         if (find(segmentsDownloaded.begin(), segmentsDownloaded.end(), segment) == segmentsDownloaded.end())
         {
+            int min_workload = INT_MAX;
+            int best_client_id = -1;
+
             // For each client that has the segment
             for (auto &client : client_list_and_segments_owned)
             {
@@ -177,10 +219,35 @@ int find_best_client(
                     }
                 }
             }
+
+            // Request the segment from the best client
+            request_segment_from_best_client(best_client_id, segment);
+
+            // Receive the segment from the best client
+            receive_requested_segment(best_client_id, dc);
+
+            // Add the segment to the downloaded segments
+            peer_info_local->add_segment_downloaded(file, segment);
         }
     }
+}
 
-    return best_client_id;
+void check_if_file_was_downloaded(
+    string file,
+    peer_info *peer_info_local,
+    vector<string> segments_contained)
+{
+    // Check if the file was downloaded
+    vector<string> segmentsDownloaded = peer_info_local->get_segments_downloaded(file);
+
+    // If the file was downloaded
+    if (segmentsDownloaded.size() == segments_contained.size())
+    {
+        // Remove the file from the list of wanted files
+        peer_info_local->remove_file_wanted(file);
+
+        cout << "File " << file << " was downloaded" << endl;
+    }
 }
 
 void download_thread_func(
@@ -200,11 +267,17 @@ void download_thread_func(
             handle_response_to_request(segments_contained);
 
         // Find the best client to download from
-        int best_client_id = find_best_client(
+        find_best_client(
             segments_contained,
             client_list_and_segments_owned,
             file,
             input,
             dc);
+
+        // Check if the file was downloaded
+        check_if_file_was_downloaded(
+            file,
+            input,
+            segments_contained);
     }
 }
