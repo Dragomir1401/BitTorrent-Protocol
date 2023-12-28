@@ -146,8 +146,6 @@ void handle_request(
     receive_filename(filename, source);
     string filename_string(filename);
 
-    cout << "filename: " << filename_string << endl;
-
     // Send back to the source the swarm info for the requested file
     map<string, swarm_info> file_to_peers_owning_it = tracker_info_local->get_file_to_peers_owning_it();
     swarm_info swarm = file_to_peers_owning_it[filename_string];
@@ -246,43 +244,26 @@ void tracker(
 
     // Receive actions from peers using recv any
     // and send back the appropriate response
-    int action;
-    int source = recv_command(action);
-
-    switch (action)
+    while (true)
     {
-    case action::REQUEST:
-        handle_request(source, tracker_info_local);
-        break;
+        int action;
+        int source = recv_command(action);
 
-    case action::UPDATE:
-        break;
+        switch (action)
+        {
+        case action::REQUEST:
+            handle_request(source, tracker_info_local);
+            break;
 
-    case action::FINALIZE:
-        break;
+        case action::UPDATE:
+            break;
 
-    default:
-        cout << "Error: action not recognized" << endl;
-        break;
+        case action::FINALIZE:
+            break;
+
+        default:
+            cout << "Error: action not recognized" << endl;
+            break;
+        }
     }
-
-    // Print tracker info to out file
-    // ofstream out_file;
-    // out_file.open("out.txt");
-
-    // map<string, swarm_info> file_to_peers_owning_it = tracker_info_local->get_file_to_peers_owning_it();
-    // for (auto &file : file_to_peers_owning_it)
-    // {
-    //     out_file << file.first << endl;
-    //     for (auto &swarm : file.second.get_client_list_and_segments_owned())
-    //     {
-    //         out_file << swarm.first << endl;
-    //         for (auto &segment : swarm.second)
-    //         {
-    //             out_file << segment << endl;
-    //         }
-    //     }
-    // }
-
-    // out_file.close();
 }
