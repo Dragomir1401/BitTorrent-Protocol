@@ -21,6 +21,14 @@ using namespace std;
 #define HASH_SIZE 32
 #define MAX_CHUNKS 100
 
+// Define enum for actions get, update, finalize
+enum action
+{
+    REQUEST,
+    UPDATE,
+    FINALIZE
+};
+
 void tracker(
     int numtasks,
     int rank);
@@ -30,10 +38,12 @@ void peer(
     int rank);
 
 void download_thread_func(
-    int rank);
+    int rank,
+    peer_info *input);
 
 void upload_thread_func(
-    int rank);
+    int rank,
+    peer_info *input);
 
 peer_info *read_peer_input(
     int rank);

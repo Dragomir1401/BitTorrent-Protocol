@@ -1,6 +1,7 @@
 #include "header.hpp"
 
-peer_info *read_peer_input(int rank)
+peer_info *read_peer_input(
+    int rank)
 {
     // Read from file in<rank>.txt
     string filename = "in" + to_string(rank) + ".txt";
