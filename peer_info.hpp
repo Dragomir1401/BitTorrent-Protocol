@@ -7,8 +7,9 @@ class peer_info
 {
 public:
     peer_info(
-        map<string, vector<string>> filesOwned,
-        vector<string> filesWanted);
+        map<string, vector<string>> files_owned,
+        vector<string> files_wanted,
+        map<string, vector<string>> segments_downloaded);
     ~peer_info();
     map<string, vector<string>> get_files_owned();
     vector<string> get_files_wanted();
@@ -21,8 +22,14 @@ public:
         string filename);
     void remove_file_wanted(
         string filename);
+    void add_segment_downloaded(
+        string filename,
+        string segment);
+    vector<string> get_segments_downloaded(
+        string filename);
 
 private:
-    map<string, vector<string>> filesOwned;
-    vector<string> filesWanted;
+    map<string, vector<string>> files_owned;
+    vector<string> files_wanted;
+    map<string, vector<string>> segments_downloaded;
 };

@@ -9,9 +9,12 @@
 #include <string>
 #include <sstream>
 #include <thread>
+#include <algorithm>
+#include <climits>
 #include "peer_info.hpp"
 #include "tracker_info.hpp"
 #include "swarm_info.hpp"
+#include "distribution_center.hpp"
 
 using namespace std;
 
@@ -35,11 +38,13 @@ void tracker(
 
 void peer(
     int numtasks,
-    int rank);
+    int rank,
+    distribution_center *dc);
 
 void download_thread_func(
     int rank,
-    peer_info *input);
+    peer_info *input,
+    distribution_center *dc);
 
 void upload_thread_func(
     int rank,

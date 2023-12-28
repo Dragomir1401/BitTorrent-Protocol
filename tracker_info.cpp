@@ -31,3 +31,40 @@ void tracker_info::remove_file(
 {
     this->file_to_peers_owning_it.erase(filename);
 }
+
+void tracker_info::add_segment(
+    string filename,
+    string segment)
+{
+    this->segments_contained_in_file[filename].push_back(segment);
+}
+
+void tracker_info::remove_segment(
+    string filename,
+    string segment)
+{
+    for (int i = 0; i < (int)(this->segments_contained_in_file[filename].size()); i++)
+    {
+        if (this->segments_contained_in_file[filename][i] == segment)
+        {
+            this->segments_contained_in_file[filename].erase(this->segments_contained_in_file[filename].begin() + i);
+            break;
+        }
+    }
+}
+
+vector<string> tracker_info::get_segments(
+    string filename)
+{
+    return this->segments_contained_in_file[filename];
+}
+
+void tracker_info::add_segments(
+    string filename,
+    vector<string> segments)
+{
+    for (int i = 0; i < (int)(segments.size()); i++)
+    {
+        this->segments_contained_in_file[filename].push_back(segments[i]);
+    }
+}

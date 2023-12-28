@@ -126,7 +126,7 @@ void send_segments(
 {
     for (auto &segment : segments_owned)
     {
-        // Send each segment to the source
+        // Send each segment to the destination
         MPI_Send(
             segment.c_str(),
             segment.size() + 1,
@@ -135,6 +135,21 @@ void send_segments(
             0,
             MPI_COMM_WORLD);
     }
+}
+
+void send_info_about_file_structure(int number_of_segments, vector<string> segment, int dest)
+{
+    // Send number of segments which the file is divided into
+    MPI_Send(
+        &number_of_segments,
+        1,
+        MPI_INT,
+        dest,
+        0,
+        MPI_COMM_WORLD);
+
+    // Send all segments that compose the file
+    send_segments(segment, dest, number_of_segments);
 }
 
 void handle_request(
@@ -150,6 +165,11 @@ void handle_request(
     map<string, swarm_info> file_to_peers_owning_it = tracker_info_local->get_file_to_peers_owning_it();
     swarm_info swarm = file_to_peers_owning_it[filename_string];
     map<int, vector<string>> client_list_and_segments_owned = swarm.get_client_list_and_segments_owned();
+
+    // Send the file structure
+    int number_of_segments = tracker_info_local->get_segments(filename_string).size();
+    vector<string> segments = tracker_info_local->get_segments(filename_string);
+    send_info_about_file_structure(number_of_segments, segments, source);
 
     // Send the number of peers owning the file
     int num_peers_owning_file = client_list_and_segments_owned.size();
@@ -224,6 +244,9 @@ void receive_initial_holders(
 
             // Add segments to tracker info based on the pairing filename-swarm
             add_to_tracker_info(tracker_info_local, i, filename_string, segments_owned);
+
+            // Add the segment to the tracker info
+            tracker_info_local->add_segments(filename_string, segments_owned);
         }
     }
 }

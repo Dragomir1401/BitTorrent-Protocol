@@ -51,8 +51,15 @@ peer_info *read_peer_input(
         filesWanted.push_back(filename);
     }
 
+    // For each file wanted create an entry in the segmentsDownloaded map with an empty vector
+    map<string, vector<string>> segmentsDownloaded;
+    for (auto &file : filesWanted)
+    {
+        segmentsDownloaded[file] = vector<string>();
+    }
+
     // Create result
-    peer_info *result = new peer_info(filesOwned, filesWanted);
+    peer_info *result = new peer_info(filesOwned, filesWanted, segmentsDownloaded);
 
     // Close file
     in.close();
