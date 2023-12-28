@@ -21,7 +21,7 @@ int recv_request(
 void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
 {
     // Receive in loop requests
-    while (true)
+    while (!dc->get_all_clients_finished_downloading())
     {
         // Receive request from other peers
         int action;
@@ -62,4 +62,7 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
                 MPI_COMM_WORLD);
         }
     }
+
+    // Close the thread
+    return;
 }

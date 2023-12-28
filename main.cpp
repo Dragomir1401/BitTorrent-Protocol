@@ -22,7 +22,7 @@ int main(
 
     if (rank == TRACKER_RANK)
     {
-        tracker(numtasks, rank);
+        tracker(numtasks, rank, dc);
     }
     else
     {

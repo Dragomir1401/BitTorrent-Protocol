@@ -252,9 +252,33 @@ void receive_initial_holders(
     }
 }
 
+void handle_finalize(
+    int source,
+    map<int, bool> &finished_downloading)
+{
+    // The peer source has finished downloading all the files wanted
+    finished_downloading[source] = true;
+}
+
+bool all_peers_finalized(
+    map<int, bool> finished_downloading,
+    int numtasks)
+{
+    for (int i = 1; i < numtasks; i++)
+    {
+        if (!finished_downloading[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void tracker(
     int numtasks,
-    int rank)
+    int rank,
+    distribution_center *dc)
 {
     // Declare tracker info
     tracker_info *tracker_info_local = new tracker_info();
@@ -262,13 +286,20 @@ void tracker(
     // Receive segments from peers
     receive_initial_holders(numtasks, tracker_info_local);
 
+    // Declare map to store which peers have finished downloading
+    map<int, bool> finished_downloading;
+    for (int i = 1; i < numtasks; i++)
+    {
+        finished_downloading[i] = false;
+    }
+
     // After receiving from all the clients, send ACK to all of them
     // to allow them to continue with downloading or uploading
     send_acks(numtasks);
 
     // Receive actions from peers using recv any
     // and send back the appropriate response
-    while (true)
+    while (!all_peers_finalized(finished_downloading, numtasks))
     {
         int action;
         int source = recv_command(action);
@@ -283,6 +314,8 @@ void tracker(
             break;
 
         case action::FINALIZE:
+            cout << "Tracker received finalize from " << source << endl;
+            handle_finalize(source, finished_downloading);
             break;
 
         default:
@@ -290,4 +323,8 @@ void tracker(
             break;
         }
     }
+
+    cout << "All peers have finished downloading" << endl;
+    dc->set_all_clients_finished_downloading();
+    return;
 }

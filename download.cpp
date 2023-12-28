@@ -245,9 +245,31 @@ void check_if_file_was_downloaded(
     {
         // Remove the file from the list of wanted files
         peer_info_local->remove_file_wanted(file);
-
-        cout << "File " << file << " was downloaded" << endl;
     }
+}
+
+bool all_files_are_downloaded(peer_info *peer_info_local)
+{
+    // Check if all files are downloaded
+    vector<string> files_wanted = peer_info_local->get_files_wanted();
+
+    // If all files are downloaded
+    if (files_wanted.size() == 0)
+    {
+        // Send an MPI message with a STOP action
+        int action = action::FINALIZE;
+        MPI_Send(
+            &action,
+            1,
+            MPI_INT,
+            TRACKER_RANK,
+            tag::COMMANDS,
+            MPI_COMM_WORLD);
+
+        return true;
+    }
+
+    return false;
 }
 
 void download_thread_func(
@@ -255,29 +277,37 @@ void download_thread_func(
     peer_info *input,
     distribution_center *dc)
 {
-    // For each wanted file
-    for (auto &file : input->get_files_wanted())
+    while (!all_files_are_downloaded(input))
     {
-        // Send a request to the tracker
-        request(file);
+        // For each wanted file
+        for (auto &file : input->get_files_wanted())
+        {
+            // Send a request to the tracker
+            request(file);
 
-        // Handle response from tracker
-        vector<string> segments_contained;
-        map<int, vector<string>> client_list_and_segments_owned =
-            handle_response_to_request(segments_contained);
+            // Handle response from tracker
+            vector<string> segments_contained;
+            map<int, vector<string>> client_list_and_segments_owned =
+                handle_response_to_request(segments_contained);
 
-        // Find the best client to download from
-        find_best_client(
-            segments_contained,
-            client_list_and_segments_owned,
-            file,
-            input,
-            dc);
+            // Find the best client to download from
+            find_best_client(
+                segments_contained,
+                client_list_and_segments_owned,
+                file,
+                input,
+                dc);
 
-        // Check if the file was downloaded
-        check_if_file_was_downloaded(
-            file,
-            input,
-            segments_contained);
+            // Check if the file was downloaded
+            check_if_file_was_downloaded(
+                file,
+                input,
+                segments_contained);
+        }
     }
+
+    cout << "Client " << rank << " finished downloading all files" << endl;
+
+    // Close the download thread if all files are downloaded
+    return;
 }

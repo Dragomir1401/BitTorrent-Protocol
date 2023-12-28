@@ -43,7 +43,8 @@ enum tag
 
 void tracker(
     int numtasks,
-    int rank);
+    int rank,
+    distribution_center *dc);
 
 void peer(
     int numtasks,
