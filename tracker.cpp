@@ -283,7 +283,6 @@ void send_message_to_upload(
 {
     for (int i = 1; i < numtasks; i++)
     {
-        cout << "Sending " << action << " to " << i << endl;
         MPI_Send(
             &action,
             1,
@@ -383,7 +382,6 @@ void tracker(
             break;
 
         case action::FINALIZE:
-            cout << "Tracker received finalize from " << source << endl;
             handle_finalize(source, finished_downloading);
             break;
 

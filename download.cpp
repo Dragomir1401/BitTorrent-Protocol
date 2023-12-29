@@ -140,7 +140,8 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
 
 void request_segment_from_best_client(
     int best_client_id,
-    string segment)
+    string segment,
+    distribution_center *dc)
 {
     // Send an MPI message with a GET action
     int action = action::REQUEST;
@@ -152,14 +153,17 @@ void request_segment_from_best_client(
         tag::DOWNLOAD_REQUEST,
         MPI_COMM_WORLD);
 
+    // Increase the number of requests of the client in the distribution center
+    dc->add_request(best_client_id);
+
     // Then send the segment
-    MPI_Send(
-        segment.c_str(),
-        segment.size() + 1,
-        MPI_CHAR,
-        best_client_id,
-        tag::DOWNLOAD,
-        MPI_COMM_WORLD);
+    // MPI_Send(
+    //     segment.c_str(),
+    //     segment.size() + 1,
+    //     MPI_CHAR,
+    //     best_client_id,
+    //     tag::DOWNLOAD,
+    //     MPI_COMM_WORLD);
 }
 
 void receive_requested_segment(int best_client_id, distribution_center *dc)
@@ -268,6 +272,8 @@ void find_best_client(
                     // Get nr of requests of client from the distribution center
                     int nr_requests = dc->get_number_of_requests(client_id);
 
+                    cout << "Client " << client_id << " has " << nr_requests << " requests" << endl;
+
                     // If the client has a lower workload
                     if (nr_requests < min_workload)
                     {
@@ -278,7 +284,7 @@ void find_best_client(
             }
 
             // Request the segment from the best client
-            request_segment_from_best_client(best_client_id, segment);
+            request_segment_from_best_client(best_client_id, segment, dc);
 
             // Receive the segment from the best client
             receive_requested_segment(best_client_id, dc);

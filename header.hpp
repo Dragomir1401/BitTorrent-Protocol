@@ -11,6 +11,7 @@
 #include <thread>
 #include <algorithm>
 #include <climits>
+#include <queue>
 #include "peer_info.hpp"
 #include "tracker_info.hpp"
 #include "swarm_info.hpp"
