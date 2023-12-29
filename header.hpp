@@ -29,7 +29,8 @@ enum action
 {
     REQUEST,
     UPDATE,
-    FINALIZE
+    FINALIZE,
+    KILL_UPLOAD_THREAD
 };
 
 // Enum for download and upload tags
@@ -37,8 +38,10 @@ enum tag
 {
     INIT,
     COMMANDS,
+    DOWNLOAD_REQUEST,
     DOWNLOAD,
-    UPLOAD
+    UPLOAD,
+    KILL
 };
 
 void tracker(

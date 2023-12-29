@@ -275,6 +275,23 @@ bool all_peers_finalized(
     return true;
 }
 
+void send_message_to_upload(
+    int numtasks,
+    int action)
+{
+    for (int i = 1; i < numtasks; i++)
+    {
+        cout << "Sending " << action << " to " << i << endl;
+        MPI_Send(
+            &action,
+            1,
+            MPI_INT,
+            i,
+            tag::KILL,
+            MPI_COMM_WORLD);
+    }
+}
+
 void tracker(
     int numtasks,
     int rank,
@@ -325,6 +342,9 @@ void tracker(
     }
 
     cout << "All peers have finished downloading" << endl;
-    dc->set_all_clients_finished_downloading();
+    // dc->set_all_clients_finished_downloading();
+    // Send a KILL message on the KILL_UPLOAD_THREAD tag to all peers
+    send_message_to_upload(numtasks, action::KILL_UPLOAD_THREAD);
+
     return;
 }

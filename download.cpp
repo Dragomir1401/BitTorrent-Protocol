@@ -149,7 +149,7 @@ void request_segment_from_best_client(
         1,
         MPI_INT,
         best_client_id,
-        tag::DOWNLOAD,
+        tag::DOWNLOAD_REQUEST,
         MPI_COMM_WORLD);
 
     // Then send the segment
@@ -237,14 +237,29 @@ void check_if_file_was_downloaded(
     peer_info *peer_info_local,
     vector<string> segments_contained)
 {
-    // Check if the file was downloaded
+    // Get the segments downloaded
     vector<string> segmentsDownloaded = peer_info_local->get_segments_downloaded(file);
 
-    // If the file was downloaded
+    // If the size of the segments downloaded is equal to the size of the segments contained
     if (segmentsDownloaded.size() == segments_contained.size())
     {
-        // Remove the file from the list of wanted files
-        peer_info_local->remove_file_wanted(file);
+        // Check each tag to see the order match
+        bool order_match = true;
+        for (int i = 0; i < (int)(segmentsDownloaded.size()); i++)
+        {
+            // If the order does not match
+            if (segmentsDownloaded[i] != segments_contained[i])
+            {
+                order_match = false;
+                break;
+            }
+        }
+
+        if (order_match)
+        {
+            // Remove the file from the list of wanted files
+            peer_info_local->remove_file_wanted(file);
+        }
     }
 }
 
@@ -256,7 +271,7 @@ bool all_files_are_downloaded(peer_info *peer_info_local)
     // If all files are downloaded
     if (files_wanted.size() == 0)
     {
-        // Send an MPI message with a STOP action
+        // Send an MPI message with a finalize action
         int action = action::FINALIZE;
         MPI_Send(
             &action,
