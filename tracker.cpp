@@ -383,6 +383,7 @@ void tracker(
 
         case action::FINALIZE:
             handle_finalize(source, finished_downloading);
+            cout << "Peer " << source << " has finished downloading" << endl;
             break;
 
         default:

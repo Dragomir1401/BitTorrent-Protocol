@@ -155,29 +155,21 @@ void request_segment_from_best_client(
 
     // Increase the number of requests of the client in the distribution center
     dc->add_request(best_client_id);
-
-    // Then send the segment
-    // MPI_Send(
-    //     segment.c_str(),
-    //     segment.size() + 1,
-    //     MPI_CHAR,
-    //     best_client_id,
-    //     tag::DOWNLOAD,
-    //     MPI_COMM_WORLD);
 }
 
 void receive_requested_segment(int best_client_id, distribution_center *dc)
 {
     // Receive ACK from the best client
+    MPI_Request recvReq;
     char *ack = (char *)malloc(4 * sizeof(char));
-    MPI_Recv(
+    MPI_Irecv(
         ack,
         4,
         MPI_CHAR,
         best_client_id,
-        tag::UPLOAD,
+        tag::DOWNLOAD,
         MPI_COMM_WORLD,
-        MPI_STATUS_IGNORE);
+        &recvReq);
 
     // Remove the request from the distribution center
     dc->remove_request(best_client_id);
@@ -271,8 +263,6 @@ void find_best_client(
                 {
                     // Get nr of requests of client from the distribution center
                     int nr_requests = dc->get_number_of_requests(client_id);
-
-                    cout << "Client " << client_id << " has " << nr_requests << " requests" << endl;
 
                     // If the client has a lower workload
                     if (nr_requests < min_workload)

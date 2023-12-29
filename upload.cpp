@@ -1,50 +1,42 @@
 #include "header.hpp"
 
 int recv_request(
-    int &action)
+    queue<MPI_Request> &requestQueue)
 {
     // Receive action from the other clients excpet the tracker and itself
-    MPI_Status status;
-    MPI_Recv(
+    MPI_Request recvReq;
+    int action;
+    MPI_Irecv(
         &action,
         1,
         MPI_INT,
         MPI_ANY_SOURCE,
         tag::DOWNLOAD_REQUEST,
         MPI_COMM_WORLD,
-        &status);
+        &recvReq);
+    requestQueue.push(recvReq);
 
-    // Return the source of the action
+    /// Test the recvReq
+    int flag;
+    MPI_Status status;
+    MPI_Test(&recvReq, &flag, &status);
+
     return status.MPI_SOURCE;
 }
 
 bool check_if_received_kill()
 {
-    // Probe to see if tracker sent a kill message
-    MPI_Status status;
-    int flag;
-    MPI_Iprobe(
-        TRACKER_RANK,
-        tag::KILL,
-        MPI_COMM_WORLD,
-        &flag,
-        &status);
-
-    if (!flag)
-    {
-        return false;
-    }
-
     // Receive the kill message
     int kill_message;
-    MPI_Recv(
+    MPI_Request recvReq;
+    MPI_Irecv(
         &kill_message,
         1,
         MPI_INT,
         TRACKER_RANK,
         tag::KILL,
         MPI_COMM_WORLD,
-        MPI_STATUS_IGNORE);
+        &recvReq);
 
     if (kill_message == action::KILL_UPLOAD_THREAD)
     {
@@ -56,56 +48,66 @@ bool check_if_received_kill()
 
 void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
 {
-    // Receive in loop requests
+    std::queue<MPI_Request> requestQueue;
+    MPI_Status status;
+    int flag;
+
     while (true)
     {
-        if (check_if_received_kill())
-        {
-            // Close the thread
-            return;
-        }
+        // if (check_if_received_kill())
+        // {
+        //     cout << "Proccess with rank " << rank << " received kill message" << endl;
+        //     // Process any remaining requests before exiting
+        //     while (!requestQueue.empty())
+        //     {
+        //         // Handle pending requests
+        //         auto req = requestQueue.front();
+        //         // Cancel the request
+        //         MPI_Cancel(&req);
+        //         // Remove the request from the queue
+        //         requestQueue.pop();
+        //     }
 
-        // Receive request from other peers
+        //     // Close the thread
+        //     return;
+        // }
+
+        // Non-blocking receive of requests from other peers
         int action;
-        int source = recv_request(action);
+        MPI_Request recvReq;
+        MPI_Irecv(
+            &action,
+            1,
+            MPI_INT,
+            MPI_ANY_SOURCE,
+            tag::DOWNLOAD_REQUEST,
+            MPI_COMM_WORLD,
+            &recvReq);
 
-        // If the action is a request
-        if (action == action::REQUEST)
+        requestQueue.push(recvReq);
+
+        // Check and process completed requests
+        while (!requestQueue.empty())
         {
-            // Add a request to the distribution center for the current client
-            dc->add_request(rank);
+            MPI_Test(&requestQueue.front(), &flag, &status);
+            if (flag)
+            {
+                // Handle the request
+                int source = status.MPI_SOURCE;
 
-            MPI_Status status;
-            MPI_Probe(source, tag::DOWNLOAD, MPI_COMM_WORLD, &status);
+                // Send back ack to the source
+                char ack[4] = "ACK";
+                MPI_Send(
+                    ack,
+                    4,
+                    MPI_CHAR,
+                    source,
+                    tag::INIT,
+                    MPI_COMM_WORLD);
 
-            int segment_size;
-            MPI_Get_count(&status, MPI_CHAR, &segment_size);
-
-            char *segment = new char[segment_size];
-
-            MPI_Recv(
-                segment,
-                segment_size,
-                MPI_CHAR,
-                source,
-                tag::DOWNLOAD,
-                MPI_COMM_WORLD,
-                MPI_STATUS_IGNORE);
-
-            delete segment;
-
-            // Send an ACK to the source meaning that the segment is being sent
-            char *ack = (char *)malloc(4 * sizeof(char));
-            strcpy(ack, "ACK");
-            MPI_Send(
-                ack,
-                4,
-                MPI_CHAR,
-                source,
-                tag::UPLOAD,
-                MPI_COMM_WORLD);
-
-            free(ack);
+                // Remove the completed request from the queue
+                requestQueue.pop();
+            }
         }
     }
 
