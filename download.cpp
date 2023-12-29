@@ -232,7 +232,30 @@ void find_best_client(
     }
 }
 
+void save_downloaded_file(
+    vector<string> segmentsDownloaded,
+    int rank,
+    string file)
+{
+    // Save segments to a file with the name client<R>_filename
+    string filename = "client" + to_string(rank) + "_" + file;
+
+    // Create a txt file
+    ofstream output_file(filename);
+
+    // For each segment
+    for (auto &segment : segmentsDownloaded)
+    {
+        // Write the segment to the file
+        output_file << segment << endl;
+    }
+
+    // Close the file
+    output_file.close();
+}
+
 void check_if_file_was_downloaded(
+    int rank,
     string file,
     peer_info *peer_info_local,
     vector<string> segments_contained)
@@ -257,8 +280,12 @@ void check_if_file_was_downloaded(
 
         if (order_match)
         {
+
             // Remove the file from the list of wanted files
             peer_info_local->remove_file_wanted(file);
+
+            // Save the file
+            save_downloaded_file(segmentsDownloaded, rank, file);
         }
     }
 }
@@ -315,6 +342,7 @@ void download_thread_func(
 
             // Check if the file was downloaded
             check_if_file_was_downloaded(
+                rank,
                 file,
                 input,
                 segments_contained);
