@@ -1,49 +1,40 @@
 #include "header.hpp"
 
-int recv_request(
-    queue<MPI_Request> &requestQueue)
-{
-    // Receive action from the other clients excpet the tracker and itself
-    MPI_Request recvReq;
-    int action;
-    MPI_Irecv(
-        &action,
-        1,
-        MPI_INT,
-        MPI_ANY_SOURCE,
-        tag::DOWNLOAD_REQUEST,
-        MPI_COMM_WORLD,
-        &recvReq);
-    requestQueue.push(recvReq);
-
-    /// Test the recvReq
-    int flag;
-    MPI_Status status;
-    MPI_Test(&recvReq, &flag, &status);
-
-    return status.MPI_SOURCE;
-}
-
 bool check_if_received_kill()
 {
-    // Receive the kill message
+    MPI_Status status;
+    int flag;
     int kill_message;
-    MPI_Request recvReq;
-    MPI_Irecv(
-        &kill_message,
-        1,
-        MPI_INT,
+
+    // Non-blocking probe to check if a kill message has been sent by the tracker
+    MPI_Iprobe(
         TRACKER_RANK,
         tag::KILL,
         MPI_COMM_WORLD,
-        &recvReq);
+        &flag,
+        &status);
 
-    if (kill_message == action::KILL_UPLOAD_THREAD)
+    if (flag)
     {
-        return true;
+        // A message is available, receive the kill message
+        MPI_Request killReq;
+        MPI_Irecv(
+            &kill_message,
+            1,
+            MPI_INT,
+            TRACKER_RANK,
+            tag::KILL,
+            MPI_COMM_WORLD,
+            &killReq);
+
+        // Check if the received message is the kill signal
+        if (kill_message == action::KILL_UPLOAD_THREAD)
+        {
+            return true; // Kill signal received
+        }
     }
 
-    return false;
+    return false; // No kill signal received
 }
 
 void get_request_for_workload(int workload)
@@ -78,23 +69,23 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
 
     while (true)
     {
-        // if (check_if_received_kill())
-        // {
-        //     cout << "Proccess with rank " << rank << " received kill message" << endl;
-        //     // Process any remaining requests before exiting
-        //     while (!requestQueue.empty())
-        //     {
-        //         // Handle pending requests
-        //         auto req = requestQueue.front();
-        //         // Cancel the request
-        //         MPI_Cancel(&req);
-        //         // Remove the request from the queue
-        //         requestQueue.pop();
-        //     }
+        if (check_if_received_kill())
+        {
+            cout << "Proccess with rank " << rank << " received kill message" << endl;
+            // Process any remaining requests before exiting
+            while (!requestQueue.empty())
+            {
+                // Handle pending requests
+                auto req = requestQueue.front();
+                // Cancel the request
+                MPI_Cancel(&req);
+                // Remove the request from the queue
+                requestQueue.pop();
+            }
 
-        //     // Close the thread
-        //     return;
-        // }
+            // Close the thread
+            return;
+        }
 
         // Non-blocking receive of requests from other peers
         int action;
