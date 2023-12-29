@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include "swarm_info.hpp"
 using namespace std;
 
@@ -31,7 +32,7 @@ public:
         string segment);
     vector<string> get_segments(
         string filename);
-    void print();
+    void to_file();
 
 private:
     map<string, swarm_info> file_to_peers_owning_it;

@@ -30,8 +30,6 @@ bool check_if_received_kill()
         &flag,
         &status);
 
-    cout << "flag: " << flag << endl;
-
     if (!flag)
     {
         return false;

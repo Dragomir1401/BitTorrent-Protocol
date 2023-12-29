@@ -17,14 +17,15 @@ void receive_filename(
 
 void receive_num_segments(
     int *num_segments,
-    int from)
+    int from,
+    tag tag)
 {
     MPI_Recv(
         num_segments,
         1,
         MPI_INT,
         from,
-        tag::INIT,
+        tag,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 }
@@ -32,12 +33,13 @@ void receive_num_segments(
 void receive_segments(
     vector<string> &segments_owned,
     int from,
-    int num_segments)
+    int num_segments,
+    tag tag)
 {
     for (int j = 0; j < num_segments; j++)
     {
         MPI_Status status;
-        MPI_Probe(from, tag::INIT, MPI_COMM_WORLD, &status);
+        MPI_Probe(from, tag, MPI_COMM_WORLD, &status);
 
         int segment_size;
         MPI_Get_count(&status, MPI_CHAR, &segment_size);
@@ -49,7 +51,7 @@ void receive_segments(
             segment_size,
             MPI_CHAR,
             from,
-            tag::INIT,
+            tag,
             MPI_COMM_WORLD,
             MPI_STATUS_IGNORE);
 
@@ -237,11 +239,11 @@ void receive_initial_holders(
 
             // Receive the number of segments
             int num_segments;
-            receive_num_segments(&num_segments, i);
+            receive_num_segments(&num_segments, i, tag::INIT);
 
             // Receive each segment
             vector<string> segments_owned;
-            receive_segments(segments_owned, i, num_segments);
+            receive_segments(segments_owned, i, num_segments, tag::INIT);
 
             // Add segments to tracker info based on the pairing filename-swarm
             add_to_tracker_info(tracker_info_local, i, filename_string, segments_owned);
@@ -292,6 +294,54 @@ void send_message_to_upload(
     }
 }
 
+void handle_update(int source, tracker_info *tracker_info_local)
+{
+    // Receive the filename
+    char *filename = (char *)malloc(MAX_FILENAME * sizeof(char));
+    receive_filename(filename, source, tag::UPDATE_COMMAND);
+    string filename_string(filename);
+
+    // Receive the number of segments
+    int num_segments;
+    receive_num_segments(&num_segments, source, tag::UPDATE_COMMAND);
+
+    // Receive each segment
+    vector<string> segments_owned;
+    receive_segments(segments_owned, source, num_segments, tag::UPDATE_COMMAND);
+
+    // Add segments to tracker info based on the pairing filename-swarm
+    swarm_info swarm = tracker_info_local->get_file_to_peers_owning_it()[filename_string];
+    map<int, vector<string>> client_list_and_segments_owned = swarm.get_client_list_and_segments_owned();
+
+    if (client_list_and_segments_owned.find(source) == client_list_and_segments_owned.end())
+    {
+        vector<string> new_segments;
+        for (int i = 0; i < (int)(segments_owned.size()); i++)
+        {
+            new_segments.push_back(segments_owned[i]);
+        }
+        client_list_and_segments_owned[source] = new_segments;
+    }
+    // If the client has some segments of the file, add the new ones
+    else
+    {
+        for (int i = 0; i < (int)(segments_owned.size()); i++)
+        {
+            // If the client does not have the segment, add it
+            if (find(client_list_and_segments_owned[source].begin(),
+                     client_list_and_segments_owned[source].end(), segments_owned[i]) ==
+                client_list_and_segments_owned[source].end())
+            {
+                client_list_and_segments_owned[source].push_back(segments_owned[i]);
+            }
+        }
+    }
+
+    // Add the swarm to the tracker info
+    swarm_info new_swarm(client_list_and_segments_owned);
+    tracker_info_local->add_file(filename_string, new_swarm);
+}
+
 void tracker(
     int numtasks,
     int rank,
@@ -328,6 +378,8 @@ void tracker(
             break;
 
         case action::UPDATE:
+            handle_update(source, tracker_info_local);
+            tracker_info_local->to_file();
             break;
 
         case action::FINALIZE:
@@ -342,7 +394,7 @@ void tracker(
     }
 
     cout << "All peers have finished downloading" << endl;
-    // dc->set_all_clients_finished_downloading();
+
     // Send a KILL message on the KILL_UPLOAD_THREAD tag to all peers
     send_message_to_upload(numtasks, action::KILL_UPLOAD_THREAD);
 

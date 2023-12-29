@@ -69,25 +69,30 @@ void tracker_info::add_segments(
     }
 }
 
-void tracker_info::print()
+void tracker_info::to_file()
 {
-    cout << "Tracker info:" << endl;
+    ofstream fout;
+    // Open with append mode
+    fout.open("tracker_info.txt", ios::app);
+
+    fout << "Tracker info:" << endl;
     for (auto &file : this->file_to_peers_owning_it)
     {
-        cout << "File: " << file.first << endl;
+        fout << "File: " << file.first << ">>>>";
 
         swarm_info swarm = file.second;
         map<int, vector<string>> client_list_and_segments_owned = swarm.get_client_list_and_segments_owned();
 
-        cout << "Peers owning it: " << endl;
-        for (auto &client : client_list_and_segments_owned)
+        fout << "Peers owning it: ";
+        for (auto it = client_list_and_segments_owned.begin(); it != client_list_and_segments_owned.end(); it++)
         {
-            cout << "Client id: " << client.first << endl;
-            cout << "Segments owned: " << endl;
-            for (auto &segment : client.second)
-            {
-                cout << segment << endl;
-            }
+            fout << " Client " << it->first << " with " << it->second.size() << " segments; ";
         }
+        fout << endl;
     }
+
+    fout << "END OF TRACKER INFO" << endl
+         << endl;
+
+    fout.close();
 }

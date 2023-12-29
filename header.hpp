@@ -38,6 +38,7 @@ enum tag
 {
     INIT,
     COMMANDS,
+    UPDATE_COMMAND,
     DOWNLOAD_REQUEST,
     DOWNLOAD,
     UPLOAD,

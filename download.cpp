@@ -179,12 +179,59 @@ void receive_requested_segment(int best_client_id, distribution_center *dc)
     dc->remove_request(best_client_id);
 }
 
+void send_update_to_tracker(
+    vector<string> segmentsDownloaded,
+    string filename)
+{
+    // Send an update command to tracker
+    int action = action::UPDATE;
+    MPI_Send(
+        &action,
+        1,
+        MPI_INT,
+        TRACKER_RANK,
+        tag::COMMANDS,
+        MPI_COMM_WORLD);
+
+    // Send the filename
+    MPI_Send(
+        filename.c_str(),
+        filename.size() + 1,
+        MPI_CHAR,
+        TRACKER_RANK,
+        tag::UPDATE_COMMAND,
+        MPI_COMM_WORLD);
+
+    // Send number of segments downloaded from the filename
+    int num_segments_downloaded = segmentsDownloaded.size();
+    MPI_Send(
+        &num_segments_downloaded,
+        1,
+        MPI_INT,
+        TRACKER_RANK,
+        tag::UPDATE_COMMAND,
+        MPI_COMM_WORLD);
+
+    // Send each segment downloaded to tracker
+    for (auto &segment : segmentsDownloaded)
+    {
+        MPI_Send(
+            segment.c_str(),
+            segment.size() + 1,
+            MPI_CHAR,
+            TRACKER_RANK,
+            tag::UPDATE_COMMAND,
+            MPI_COMM_WORLD);
+    }
+}
+
 void find_best_client(
     vector<string> segments_contained,
     map<int, vector<string>> client_list_and_segments_owned,
     string file,
     peer_info *peer_info_local,
-    distribution_center *dc)
+    distribution_center *dc,
+    int &download_counter)
 {
     vector<string> segmentsDownloaded = peer_info_local->get_segments_downloaded(file);
 
@@ -193,6 +240,16 @@ void find_best_client(
     // Send a request to that client
     for (auto &segment : segments_contained)
     {
+        // If the download counter is bigger than 9
+        if (download_counter > 9)
+        {
+            // Reset the download counter
+            download_counter = 0;
+
+            // Send an update to the tracker
+            send_update_to_tracker(peer_info_local->get_segments_downloaded(file), file);
+        }
+
         // If the segment is not already downloaded
         if (find(segmentsDownloaded.begin(), segmentsDownloaded.end(), segment) == segmentsDownloaded.end())
         {
@@ -225,6 +282,9 @@ void find_best_client(
 
             // Receive the segment from the best client
             receive_requested_segment(best_client_id, dc);
+
+            // Increase the download counter
+            download_counter++;
 
             // Add the segment to the downloaded segments
             peer_info_local->add_segment_downloaded(file, segment);
@@ -280,7 +340,6 @@ void check_if_file_was_downloaded(
 
         if (order_match)
         {
-
             // Remove the file from the list of wanted files
             peer_info_local->remove_file_wanted(file);
 
@@ -319,6 +378,7 @@ void download_thread_func(
     peer_info *input,
     distribution_center *dc)
 {
+    int download_counter = 0;
     while (!all_files_are_downloaded(input))
     {
         // For each wanted file
@@ -338,7 +398,8 @@ void download_thread_func(
                 client_list_and_segments_owned,
                 file,
                 input,
-                dc);
+                dc,
+                download_counter);
 
             // Check if the file was downloaded
             check_if_file_was_downloaded(
