@@ -262,7 +262,29 @@ void find_best_client(
                 if (find(segments_owned.begin(), segments_owned.end(), segment) != segments_owned.end())
                 {
                     // Get nr of requests of client from the distribution center
-                    int nr_requests = dc->get_number_of_requests(client_id);
+                    // int nr_requests = dc->get_number_of_requests(client_id);
+                    int nr_requests = 0;
+                    // Send a request to client to get the number of requests
+                    int action = action::GET_WORKLOAD;
+                    MPI_Send(
+                        &action,
+                        1,
+                        MPI_INT,
+                        client_id,
+                        tag::WORKLOAD,
+                        MPI_COMM_WORLD);
+
+                    // Receive the number of requests
+                    MPI_Recv(
+                        &nr_requests,
+                        1,
+                        MPI_INT,
+                        client_id,
+                        tag::WORKLOAD,
+                        MPI_COMM_WORLD,
+                        MPI_STATUS_IGNORE);
+
+                    cout << "Client " << client_id << " has " << nr_requests << " requests" << endl;
 
                     // If the client has a lower workload
                     if (nr_requests < min_workload)

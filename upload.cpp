@@ -46,6 +46,30 @@ bool check_if_received_kill()
     return false;
 }
 
+void get_request_for_workload(int workload)
+{
+    // Receive the request_workload message
+    int request_workload_message;
+    MPI_Status status;
+    MPI_Recv(
+        &request_workload_message,
+        1,
+        MPI_INT,
+        MPI_ANY_SOURCE,
+        tag::WORKLOAD,
+        MPI_COMM_WORLD,
+        &status);
+
+    // Send the workload to the source
+    MPI_Send(
+        &workload,
+        1,
+        MPI_INT,
+        status.MPI_SOURCE,
+        tag::WORKLOAD,
+        MPI_COMM_WORLD);
+}
+
 void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
 {
     std::queue<MPI_Request> requestQueue;
@@ -89,6 +113,8 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
         // Check and process completed requests
         while (!requestQueue.empty())
         {
+            get_request_for_workload(requestQueue.size());
+
             MPI_Test(&requestQueue.front(), &flag, &status);
             if (flag)
             {

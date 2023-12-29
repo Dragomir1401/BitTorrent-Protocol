@@ -31,7 +31,8 @@ enum action
     REQUEST,
     UPDATE,
     FINALIZE,
-    KILL_UPLOAD_THREAD
+    KILL_UPLOAD_THREAD,
+    GET_WORKLOAD
 };
 
 // Enum for download and upload tags
@@ -43,7 +44,8 @@ enum tag
     DOWNLOAD_REQUEST,
     DOWNLOAD,
     UPLOAD,
-    KILL
+    KILL,
+    WORKLOAD
 };
 
 void tracker(
