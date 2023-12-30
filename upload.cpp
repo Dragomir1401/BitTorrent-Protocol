@@ -103,6 +103,7 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
             if (check_if_received_kill())
             {
                 cout << "Proccess with rank " << rank << " received kill message" << endl;
+
                 // Process any remaining requests before exiting
                 while (!requestQueue.empty())
                 {
