@@ -261,6 +261,8 @@ void find_best_client(
 
             // Send an update to the tracker
             send_update_to_tracker(peer_info_local->get_segments_downloaded(file), file);
+
+            // TO DO: Handle request response from tracker similar to how it is done to a real response to request to tracker
         }
 
         // If the segment is not already downloaded

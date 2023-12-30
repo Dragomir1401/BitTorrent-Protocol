@@ -340,6 +340,8 @@ void handle_update(int source, tracker_info *tracker_info_local)
     // Add the swarm to the tracker info
     swarm_info new_swarm(client_list_and_segments_owned);
     tracker_info_local->add_file(filename_string, new_swarm);
+
+    // TO DO: Also send the segments to the peers that have the file that has been updated
 }
 
 void tracker(
