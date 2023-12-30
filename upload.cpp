@@ -1,64 +1,71 @@
 #include "header.hpp"
+MPI_Request killReq = MPI_REQUEST_NULL;
+int kill_message = 0;
+MPI_Request workloadReq = MPI_REQUEST_NULL;
+int request_workload_message = 0;
 
-bool check_if_received_kill()
+void initialize_kill_signal_request()
 {
-    MPI_Status status;
-    int flag;
-    int kill_message;
-
-    // Non-blocking probe to check if a kill message has been sent by the tracker
-    MPI_Iprobe(
-        TRACKER_RANK,
-        tag::KILL,
-        MPI_COMM_WORLD,
-        &flag,
-        &status);
-
-    if (flag)
+    if (killReq == MPI_REQUEST_NULL)
     {
-        // A message is available, receive the kill message
-        MPI_Request killReq;
         MPI_Irecv(
             &kill_message,
             1,
             MPI_INT,
-            TRACKER_RANK,
+            MPI_ANY_SOURCE,
             tag::KILL,
             MPI_COMM_WORLD,
             &killReq);
-
-        // Check if the received message is the kill signal
-        if (kill_message == action::KILL_UPLOAD_THREAD)
-        {
-            return true; // Kill signal received
-        }
     }
-
-    return false; // No kill signal received
 }
 
-void get_request_for_workload(int workload)
+bool check_if_received_kill()
 {
-    // Receive the request_workload message
-    int request_workload_message;
-    MPI_Status status;
-    MPI_Recv(
-        &request_workload_message,
-        1,
-        MPI_INT,
-        MPI_ANY_SOURCE,
-        tag::WORKLOAD,
-        MPI_COMM_WORLD,
-        &status);
+    int flag;
+    MPI_Test(&killReq, &flag, MPI_STATUS_IGNORE);
 
-    // Send the workload to the source
-    MPI_Send(
-        &workload,
-        1,
-        MPI_INT,
-        status.MPI_SOURCE,
-        tag::WORKLOAD,
-        MPI_COMM_WORLD);
+    return flag && kill_message == action::KILL_UPLOAD_THREAD;
+}
+
+void initialize_workload_request()
+{
+    if (workloadReq == MPI_REQUEST_NULL)
+    {
+        MPI_Irecv(
+            &request_workload_message,
+            1,
+            MPI_INT,
+            MPI_ANY_SOURCE,
+            tag::WORKLOAD,
+            MPI_COMM_WORLD,
+            &workloadReq);
+    }
+}
+
+bool check_and_handle_workload_request(int workload)
+{
+    int flag;
+    MPI_Status status;
+
+    MPI_Test(&workloadReq, &flag, &status);
+
+    if (flag)
+    {
+        // Send the workload to the source
+        MPI_Send(
+            &workload,
+            1,
+            MPI_INT,
+            status.MPI_SOURCE,
+            tag::WORKLOAD,
+            MPI_COMM_WORLD);
+
+        // Reinitialize for next workload request
+        initialize_workload_request();
+        return true;
+    }
+
+    return false;
 }
 
 void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
@@ -67,26 +74,14 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
     MPI_Status status;
     int flag;
 
+    // Initialize the workload request
+    initialize_workload_request();
+
+    // Initialize the kill signal request
+    initialize_kill_signal_request();
+
     while (true)
     {
-        if (check_if_received_kill())
-        {
-            cout << "Proccess with rank " << rank << " received kill message" << endl;
-            // Process any remaining requests before exiting
-            while (!requestQueue.empty())
-            {
-                // Handle pending requests
-                auto req = requestQueue.front();
-                // Cancel the request
-                MPI_Cancel(&req);
-                // Remove the request from the queue
-                requestQueue.pop();
-            }
-
-            // Close the thread
-            return;
-        }
-
         // Non-blocking receive of requests from other peers
         int action;
         MPI_Request recvReq;
@@ -104,9 +99,27 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
         // Check and process completed requests
         while (!requestQueue.empty())
         {
-            get_request_for_workload(requestQueue.size());
+            check_and_handle_workload_request(requestQueue.size());
+            if (check_if_received_kill())
+            {
+                cout << "Proccess with rank " << rank << " received kill message" << endl;
+                // Process any remaining requests before exiting
+                while (!requestQueue.empty())
+                {
+                    // Handle pending requests
+                    auto req = requestQueue.front();
+                    // Cancel the request
+                    MPI_Cancel(&req);
+                    // Remove the request from the queue
+                    requestQueue.pop();
+                }
+
+                // Close the thread
+                return;
+            }
 
             MPI_Test(&requestQueue.front(), &flag, &status);
+
             if (flag)
             {
                 // Handle the request

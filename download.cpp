@@ -262,8 +262,8 @@ void find_best_client(
                 if (find(segments_owned.begin(), segments_owned.end(), segment) != segments_owned.end())
                 {
                     // Get nr of requests of client from the distribution center
-                    // int nr_requests = dc->get_number_of_requests(client_id);
                     int nr_requests = 0;
+
                     // Send a request to client to get the number of requests
                     int action = action::GET_WORKLOAD;
                     MPI_Send(

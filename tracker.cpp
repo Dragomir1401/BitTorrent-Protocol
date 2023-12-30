@@ -290,6 +290,7 @@ void send_message_to_upload(
             i,
             tag::KILL,
             MPI_COMM_WORLD);
+        cout << "Sent kill message to peer " << i << endl;
     }
 }
 
