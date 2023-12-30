@@ -25,7 +25,8 @@ void request(
 
 void receive_segments_owned(
     map<int, vector<string>> &client_list_and_segments_owned,
-    int client)
+    int client,
+    tag tag)
 {
     // Receive the number of segments owned
     int num_segments_owned;
@@ -34,7 +35,7 @@ void receive_segments_owned(
         1,
         MPI_INT,
         TRACKER_RANK,
-        tag::COMMANDS,
+        tag,
         MPI_COMM_WORLD,
         MPI_STATUS_IGNORE);
 
@@ -42,7 +43,7 @@ void receive_segments_owned(
     for (int i = 0; i < num_segments_owned; i++)
     {
         MPI_Status status;
-        MPI_Probe(TRACKER_RANK, tag::COMMANDS, MPI_COMM_WORLD, &status);
+        MPI_Probe(TRACKER_RANK, tag, MPI_COMM_WORLD, &status);
 
         int segment_size;
         MPI_Get_count(&status, MPI_CHAR, &segment_size);
@@ -54,7 +55,7 @@ void receive_segments_owned(
             segment_size,
             MPI_CHAR,
             TRACKER_RANK,
-            tag::COMMANDS,
+            tag,
             MPI_COMM_WORLD,
             MPI_STATUS_IGNORE);
 
@@ -132,7 +133,7 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
             MPI_STATUS_IGNORE);
 
         // Receive the segments owned
-        receive_segments_owned(client_list_and_segments_owned, client_id);
+        receive_segments_owned(client_list_and_segments_owned, client_id, tag::COMMANDS);
     }
 
     return client_list_and_segments_owned;
@@ -238,6 +239,74 @@ void send_update_to_tracker(
     }
 }
 
+map<int, vector<string>> handle_update_response()
+{
+    // Handle response from tracker to the update command
+    // Receive number of peers owning the file
+    int num_peers_owning_file;
+    MPI_Recv(
+        &num_peers_owning_file,
+        1,
+        MPI_INT,
+        TRACKER_RANK,
+        tag::UPDATE_COMMAND,
+        MPI_COMM_WORLD,
+        MPI_STATUS_IGNORE);
+
+    // Receive the client list and segments owned
+    map<int, vector<string>> client_list_and_segments_owned;
+    for (int i = 0; i < num_peers_owning_file; i++)
+    {
+        // Receive the client id
+        int client_id;
+        MPI_Recv(
+            &client_id,
+            1,
+            MPI_INT,
+            TRACKER_RANK,
+            tag::UPDATE_COMMAND,
+            MPI_COMM_WORLD,
+            MPI_STATUS_IGNORE);
+
+        // Receive the segments owned
+        receive_segments_owned(client_list_and_segments_owned, client_id, tag::UPDATE_COMMAND);
+    }
+
+    return client_list_and_segments_owned;
+}
+
+void update_client_list_and_segments_owned(
+    map<int, vector<string>> client_list_and_segments_owned,
+    map<int, vector<string>> &client_list_and_segments_owned_update)
+{
+    // Update the client list and segments owned with entries from the update that are not already in the client list and segments owned
+    for (auto &client : client_list_and_segments_owned)
+    {
+        int client_id = client.first;
+        vector<string> segments_owned = client.second;
+
+        // If the client is not already in the client list and segments owned
+        if (client_list_and_segments_owned_update.find(client_id) == client_list_and_segments_owned_update.end())
+        {
+            client_list_and_segments_owned_update[client_id] = segments_owned;
+        }
+        // If the client is already in the client list and segments owned
+        else
+        {
+            // For each segment owned by the client
+            for (auto &segment : segments_owned)
+            {
+                // If the segment is not already in the client list and segments owned
+                if (find(client_list_and_segments_owned_update[client_id].begin(), client_list_and_segments_owned_update[client_id].end(), segment) == client_list_and_segments_owned_update[client_id].end())
+                {
+                    // Add the segment to the client list and segments owned
+                    client_list_and_segments_owned_update[client_id].push_back(segment);
+                }
+            }
+        }
+    }
+}
+
 void find_best_client(
     vector<string> segments_contained,
     map<int, vector<string>> client_list_and_segments_owned,
@@ -262,7 +331,11 @@ void find_best_client(
             // Send an update to the tracker
             send_update_to_tracker(peer_info_local->get_segments_downloaded(file), file);
 
-            // TO DO: Handle request response from tracker similar to how it is done to a real response to request to tracker
+            // Handle request response from tracker similar to how it is done to a real response to request to tracker
+            map<int, vector<string>> client_list_and_segments_owned_extra = handle_update_response();
+
+            // Update the client list and segments owned
+            update_client_list_and_segments_owned(client_list_and_segments_owned_extra, client_list_and_segments_owned);
         }
 
         // If the segment is not already downloaded

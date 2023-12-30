@@ -125,7 +125,8 @@ int recv_command(
 void send_segments(
     vector<string> segments_owned,
     int dest,
-    int num_segments_owned)
+    int num_segments_owned,
+    tag tag)
 {
     for (auto &segment : segments_owned)
     {
@@ -135,7 +136,7 @@ void send_segments(
             segment.size() + 1,
             MPI_CHAR,
             dest,
-            tag::COMMANDS,
+            tag,
             MPI_COMM_WORLD);
     }
 }
@@ -152,7 +153,7 @@ void send_info_about_file_structure(int number_of_segments, vector<string> segme
         MPI_COMM_WORLD);
 
     // Send all segments that compose the file
-    send_segments(segment, dest, number_of_segments);
+    send_segments(segment, dest, number_of_segments, tag::COMMANDS);
 }
 
 void handle_request(
@@ -208,7 +209,7 @@ void handle_request(
             MPI_COMM_WORLD);
 
         // Send all segments owned by the respective client
-        send_segments(client.second, source, num_segments_owned);
+        send_segments(client.second, source, num_segments_owned, tag::COMMANDS);
     }
 }
 
@@ -341,7 +342,42 @@ void handle_update(int source, tracker_info *tracker_info_local)
     swarm_info new_swarm(client_list_and_segments_owned);
     tracker_info_local->add_file(filename_string, new_swarm);
 
-    // TO DO: Also send the segments to the peers that have the file that has been updated
+    // Send the number of peers owning the file
+    int num_peers_owning_file = client_list_and_segments_owned.size();
+    MPI_Send(
+        &num_peers_owning_file,
+        1,
+        MPI_INT,
+        source,
+        tag::UPDATE_COMMAND,
+        MPI_COMM_WORLD);
+
+    // Send the client list and segments owned
+    for (auto &client : client_list_and_segments_owned)
+    {
+        // Send the client id
+        int client_id = client.first;
+        MPI_Send(
+            &client_id,
+            1,
+            MPI_INT,
+            source,
+            tag::UPDATE_COMMAND,
+            MPI_COMM_WORLD);
+
+        // Send the number of segments owned
+        int num_segments_owned = client.second.size();
+        MPI_Send(
+            &num_segments_owned,
+            1,
+            MPI_INT,
+            source,
+            tag::UPDATE_COMMAND,
+            MPI_COMM_WORLD);
+
+        // Send all segments owned by the respective client
+        send_segments(client.second, source, num_segments_owned, tag::UPDATE_COMMAND);
+    }
 }
 
 void tracker(
