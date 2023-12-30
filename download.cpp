@@ -293,16 +293,20 @@ void update_client_list_and_segments_owned(
         // If the client is already in the client list and segments owned
         else
         {
+            int segment_counter = 0;
             // For each segment owned by the client
             for (auto &segment : segments_owned)
             {
                 // If the segment is not already in the client list and segments owned
                 if (find(client_list_and_segments_owned_update[client_id].begin(), client_list_and_segments_owned_update[client_id].end(), segment) == client_list_and_segments_owned_update[client_id].end())
                 {
+                    segment_counter++;
                     // Add the segment to the client list and segments owned
                     client_list_and_segments_owned_update[client_id].push_back(segment);
                 }
             }
+
+            cout << "Client " << client_id << " has " << segment_counter << " new segments" << endl;
         }
     }
 }
@@ -376,7 +380,6 @@ void find_best_client(
                         MPI_COMM_WORLD,
                         MPI_STATUS_IGNORE);
 
-                    cout << "Client " << client_id << " has " << nr_requests << " requests" << endl;
                     // If the client has a lower workload
                     if (nr_requests < min_workload)
                     {

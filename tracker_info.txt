@@ -16524,3 +16524,663 @@ File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 se
 File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
 END OF TRACKER INFO
 
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 10 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 10 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 10 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 20 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 10 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 30 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 10 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 30 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 20 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 30 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 40 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 40 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 40 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 40 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 10 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 10 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 10 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 10 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 10 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 20 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 10 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 20 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 20 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 40 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 30 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 40 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 30 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 40 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 50 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 60 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 50 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 0 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 0 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 10 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 20 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 30 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 40 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 10 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 10 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 20 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 10 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 10 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 10 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 10 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 10 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 10 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 10 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 20 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 10 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 20 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 20 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 10 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 20 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 20 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 20 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 20 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 30 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 20 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 30 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 30 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 20 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 30 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 30 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 30 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 40 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 40 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 40 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 40 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 40 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 40 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 40 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 40 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 50 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 40 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 50 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 60 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 0 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 10 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 0 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 30 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 0 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 40 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 0 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 50 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 0 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 10 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 20 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 30 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
+Tracker info:
+File: file1>>>>Peers owning it:  Client 1 with 80 segments;  Client 5 with 70 segments; 
+File: file2>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 50 segments; 
+File: file3>>>>Peers owning it:  Client 2 with 75 segments; 
+File: file4>>>>Peers owning it:  Client 2 with 30 segments;  Client 3 with 20 segments;  Client 5 with 20 segments; 
+File: file5>>>>Peers owning it:  Client 3 with 50 segments;  Client 5 with 40 segments; 
+File: file6>>>>Peers owning it:  Client 2 with 50 segments;  Client 3 with 60 segments; 
+File: file7>>>>Peers owning it:  Client 1 with 60 segments;  Client 4 with 70 segments; 
+END OF TRACKER INFO
+
