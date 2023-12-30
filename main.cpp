@@ -7,9 +7,6 @@ int main(
     int numtasks, rank;
     int provided;
 
-    // Create the distribution center
-    distribution_center *dc = new distribution_center(numtasks);
-
     MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
     if (provided < MPI_THREAD_MULTIPLE)
     {
@@ -22,11 +19,11 @@ int main(
 
     if (rank == TRACKER_RANK)
     {
-        tracker(numtasks, rank, dc);
+        tracker(numtasks, rank);
     }
     else
     {
-        peer(numtasks, rank, dc);
+        peer(numtasks, rank);
     }
 
     MPI_Finalize();

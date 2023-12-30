@@ -141,42 +141,59 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
 void request_segment_from_best_client(
     int best_client_id,
     string segment,
-    distribution_center *dc)
+    set<string> requested_segments)
 {
-    // Send an MPI message with a GET action
-    int action = action::REQUEST;
-    MPI_Send(
-        &action,
-        1,
-        MPI_INT,
-        best_client_id,
-        tag::DOWNLOAD_REQUEST,
-        MPI_COMM_WORLD);
 
-    // Increase the number of requests of the client in the distribution center
-    dc->add_request(best_client_id);
+    if (requested_segments.find(segment) == requested_segments.end())
+    {
+        requested_segments.insert(segment);
+
+        // Request the segment
+        // Send an MPI message with a GET action
+        int action = action::REQUEST;
+        MPI_Send(
+            &action,
+            1,
+            MPI_INT,
+            best_client_id,
+            tag::DOWNLOAD_REQUEST,
+            MPI_COMM_WORLD);
+    }
 }
 
-void receive_requested_segment(int best_client_id, distribution_center *dc)
+bool receive_requested_segment(int best_client_id)
 {
-    // Receive ACK from the best client
     MPI_Request recvReq;
     char *ack = (char *)malloc(4 * sizeof(char));
+
     MPI_Irecv(
         ack,
         4,
         MPI_CHAR,
         best_client_id,
-        tag::DOWNLOAD,
+        tag::ACKNOWLEDGEMENT,
         MPI_COMM_WORLD,
         &recvReq);
 
-    // Remove the request from the distribution center
-    dc->remove_request(best_client_id);
+    // Wait for the ACK to be received or test periodically
+    int flag = 0;
+    while (!flag)
+    {
+        MPI_Test(&recvReq, &flag, MPI_STATUS_IGNORE);
+    }
+
+    if (strcmp(ack, "ACK") == 0)
+    {
+        free(ack);
+        return true;
+    }
+
+    free(ack);
+    return false;
 }
 
 void send_update_to_tracker(
-    vector<string> segmentsDownloaded,
+    vector<string> segments_downloaded,
     string filename)
 {
     // Send an update command to tracker
@@ -199,7 +216,7 @@ void send_update_to_tracker(
         MPI_COMM_WORLD);
 
     // Send number of segments downloaded from the filename
-    int num_segments_downloaded = segmentsDownloaded.size();
+    int num_segments_downloaded = segments_downloaded.size();
     MPI_Send(
         &num_segments_downloaded,
         1,
@@ -209,7 +226,7 @@ void send_update_to_tracker(
         MPI_COMM_WORLD);
 
     // Send each segment downloaded to tracker
-    for (auto &segment : segmentsDownloaded)
+    for (auto &segment : segments_downloaded)
     {
         MPI_Send(
             segment.c_str(),
@@ -226,10 +243,10 @@ void find_best_client(
     map<int, vector<string>> client_list_and_segments_owned,
     string file,
     peer_info *peer_info_local,
-    distribution_center *dc,
     int &download_counter)
 {
-    vector<string> segmentsDownloaded = peer_info_local->get_segments_downloaded(file);
+    vector<string> segments_downloaded = peer_info_local->get_segments_downloaded(file);
+    set<string> requested_segments;
 
     // For each segment that the client wants and does not own
     // Find the client with the least workload to download from
@@ -247,7 +264,7 @@ void find_best_client(
         }
 
         // If the segment is not already downloaded
-        if (find(segmentsDownloaded.begin(), segmentsDownloaded.end(), segment) == segmentsDownloaded.end())
+        if (find(segments_downloaded.begin(), segments_downloaded.end(), segment) == segments_downloaded.end())
         {
             int min_workload = INT_MAX;
             int best_client_id = -1;
@@ -294,22 +311,25 @@ void find_best_client(
             }
 
             // Request the segment from the best client
-            request_segment_from_best_client(best_client_id, segment, dc);
+            request_segment_from_best_client(best_client_id, segment, requested_segments);
 
             // Receive the segment from the best client
-            receive_requested_segment(best_client_id, dc);
+            bool res = receive_requested_segment(best_client_id);
 
-            // Increase the download counter
-            download_counter++;
+            if (res)
+            {
+                // Increase the download counter
+                download_counter++;
 
-            // Add the segment to the downloaded segments
-            peer_info_local->add_segment_downloaded(file, segment);
+                // Add the segment to the downloaded segments
+                peer_info_local->add_segment_downloaded(file, segment);
+            }
         }
     }
 }
 
 void save_downloaded_file(
-    vector<string> segmentsDownloaded,
+    vector<string> segments_downloaded,
     int rank,
     string file)
 {
@@ -320,7 +340,7 @@ void save_downloaded_file(
     ofstream output_file(filename);
 
     // For each segment
-    for (auto &segment : segmentsDownloaded)
+    for (auto &segment : segments_downloaded)
     {
         // Write the segment to the file
         output_file << segment << endl;
@@ -337,17 +357,17 @@ void check_if_file_was_downloaded(
     vector<string> segments_contained)
 {
     // Get the segments downloaded
-    vector<string> segmentsDownloaded = peer_info_local->get_segments_downloaded(file);
+    vector<string> segments_downloaded = peer_info_local->get_segments_downloaded(file);
 
     // If the size of the segments downloaded is equal to the size of the segments contained
-    if (segmentsDownloaded.size() == segments_contained.size())
+    if (segments_downloaded.size() == segments_contained.size())
     {
         // Check each tag to see the order match
         bool order_match = true;
-        for (int i = 0; i < (int)(segmentsDownloaded.size()); i++)
+        for (int i = 0; i < (int)(segments_downloaded.size()); i++)
         {
             // If the order does not match
-            if (segmentsDownloaded[i] != segments_contained[i])
+            if (segments_downloaded[i] != segments_contained[i])
             {
                 order_match = false;
                 break;
@@ -360,7 +380,7 @@ void check_if_file_was_downloaded(
             peer_info_local->remove_file_wanted(file);
 
             // Save the file
-            save_downloaded_file(segmentsDownloaded, rank, file);
+            save_downloaded_file(segments_downloaded, rank, file);
         }
     }
 }
@@ -391,8 +411,7 @@ bool all_files_are_downloaded(peer_info *peer_info_local)
 
 void download_thread_func(
     int rank,
-    peer_info *input,
-    distribution_center *dc)
+    peer_info *input)
 {
     int download_counter = 0;
     while (!all_files_are_downloaded(input))
@@ -414,7 +433,6 @@ void download_thread_func(
                 client_list_and_segments_owned,
                 file,
                 input,
-                dc,
                 download_counter);
 
             // Check if the file was downloaded

@@ -65,7 +65,13 @@ void tracker_info::add_segments(
 {
     for (int i = 0; i < (int)(segments.size()); i++)
     {
-        this->segments_contained_in_file[filename].push_back(segments[i]);
+        // If the segment is not in the map, add it
+        if (find(this->segments_contained_in_file[filename].begin(),
+                 this->segments_contained_in_file[filename].end(), segments[i]) ==
+            this->segments_contained_in_file[filename].end())
+        {
+            this->segments_contained_in_file[filename].push_back(segments[i]);
+        }
     }
 }
 

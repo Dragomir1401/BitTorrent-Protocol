@@ -344,8 +344,7 @@ void handle_update(int source, tracker_info *tracker_info_local)
 
 void tracker(
     int numtasks,
-    int rank,
-    distribution_center *dc)
+    int rank)
 {
     // Declare tracker info
     tracker_info *tracker_info_local = new tracker_info();

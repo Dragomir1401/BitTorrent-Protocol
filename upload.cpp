@@ -68,7 +68,7 @@ bool check_and_handle_workload_request(int workload)
     return false;
 }
 
-void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
+void upload_thread_func(int rank, peer_info *input)
 {
     std::queue<MPI_Request> requestQueue;
     MPI_Status status;
@@ -103,7 +103,6 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
             if (check_if_received_kill())
             {
                 cout << "Proccess with rank " << rank << " received kill message" << endl;
-
                 // Process any remaining requests before exiting
                 while (!requestQueue.empty())
                 {
@@ -133,7 +132,7 @@ void upload_thread_func(int rank, peer_info *input, distribution_center *dc)
                     4,
                     MPI_CHAR,
                     source,
-                    tag::INIT,
+                    tag::ACKNOWLEDGEMENT,
                     MPI_COMM_WORLD);
 
                 // Remove the completed request from the queue

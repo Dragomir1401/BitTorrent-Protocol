@@ -5,6 +5,7 @@
 #include <thread>
 #include <vector>
 #include <map>
+#include <set>
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -15,7 +16,6 @@
 #include "peer_info.hpp"
 #include "tracker_info.hpp"
 #include "swarm_info.hpp"
-#include "distribution_center.hpp"
 
 using namespace std;
 
@@ -45,28 +45,25 @@ enum tag
     DOWNLOAD,
     UPLOAD,
     KILL,
-    WORKLOAD
+    WORKLOAD,
+    ACKNOWLEDGEMENT
 };
 
 void tracker(
     int numtasks,
-    int rank,
-    distribution_center *dc);
+    int rank);
 
 void peer(
     int numtasks,
-    int rank,
-    distribution_center *dc);
+    int rank);
 
 void download_thread_func(
     int rank,
-    peer_info *input,
-    distribution_center *dc);
+    peer_info *input);
 
 void upload_thread_func(
     int rank,
-    peer_info *input,
-    distribution_center *dc);
+    peer_info *input);
 
 peer_info *read_peer_input(
     int rank);
