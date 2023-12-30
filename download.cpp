@@ -301,6 +301,7 @@ void find_best_client(
                         MPI_COMM_WORLD,
                         MPI_STATUS_IGNORE);
 
+                    cout << "Client " << client_id << " has " << nr_requests << " requests" << endl;
                     // If the client has a lower workload
                     if (nr_requests < min_workload)
                     {
