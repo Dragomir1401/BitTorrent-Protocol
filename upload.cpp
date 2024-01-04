@@ -75,7 +75,7 @@ void upload_thread_func(int rank, peer_info *input)
     int flag;
 
     // Initialize the workload request
-    initialize_workload_request();
+    // initialize_workload_request();
 
     // Initialize the kill signal request
     initialize_kill_signal_request();
@@ -99,7 +99,7 @@ void upload_thread_func(int rank, peer_info *input)
         // Check and process completed requests
         while (!requestQueue.empty())
         {
-            check_and_handle_workload_request(requestQueue.size());
+            // check_and_handle_workload_request(requestQueue.size());
             if (check_if_received_kill())
             {
                 cout << "Proccess with rank " << rank << " received kill message" << endl;

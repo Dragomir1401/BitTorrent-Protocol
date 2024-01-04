@@ -142,12 +142,15 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
 void request_segment_from_best_client(
     int best_client_id,
     string segment,
-    set<string> requested_segments)
+    set<string> requested_segments,
+    vector<double> &request_times)
 {
-
     if (requested_segments.find(segment) == requested_segments.end())
     {
         requested_segments.insert(segment);
+
+        // Start the timer
+        double start_time = MPI_Wtime();
 
         // Request the segment
         // Send an MPI message with a GET action
@@ -159,10 +162,19 @@ void request_segment_from_best_client(
             best_client_id,
             tag::DOWNLOAD_REQUEST,
             MPI_COMM_WORLD);
+
+        // Store the start time in request_times at position best_client_id
+        // Ensure the size of request_times is adequate
+        if ((int)(request_times.size()) <= best_client_id)
+            request_times.resize(best_client_id + 1);
+
+        request_times[best_client_id] = start_time;
     }
 }
 
-bool receive_requested_segment(int best_client_id)
+bool receive_requested_segment(
+    int best_client_id,
+    vector<double> &request_times)
 {
     MPI_Request recvReq;
     char *ack = (char *)malloc(4 * sizeof(char));
@@ -185,6 +197,15 @@ bool receive_requested_segment(int best_client_id)
 
     if (strcmp(ack, "ACK") == 0)
     {
+        // Stop the timer
+        double end_time = MPI_Wtime();
+
+        // Calculate the elapsed time
+        double elapsed_time = end_time - request_times[best_client_id];
+
+        // Update the request_times with the elapsed time
+        request_times[best_client_id] = elapsed_time;
+
         free(ack);
         return true;
     }
@@ -314,7 +335,8 @@ void find_best_client(
     map<int, vector<string>> client_list_and_segments_owned,
     string file,
     peer_info *peer_info_local,
-    int &download_counter)
+    int &download_counter,
+    vector<double> &request_times)
 {
     vector<string> segments_downloaded = peer_info_local->get_segments_downloaded(file);
     set<string> requested_segments;
@@ -343,8 +365,10 @@ void find_best_client(
         // If the segment is not already downloaded
         if (find(segments_downloaded.begin(), segments_downloaded.end(), segment) == segments_downloaded.end())
         {
-            int min_workload = INT_MAX;
+            double min_workload = INT_MAX;
             int best_client_id = -1;
+
+            vector<int> clients_with_segment;
 
             // For each client that has the segment
             for (auto &client : client_list_and_segments_owned)
@@ -355,45 +379,30 @@ void find_best_client(
                 // If the client has the segment
                 if (find(segments_owned.begin(), segments_owned.end(), segment) != segments_owned.end())
                 {
-                    // Get nr of requests of client from the distribution center
-                    int nr_requests = 0;
-
-                    // Send a request to client to get the number of requests
-                    int action = action::GET_WORKLOAD;
-                    MPI_Send(
-                        &action,
-                        1,
-                        MPI_INT,
-                        client_id,
-                        tag::WORKLOAD,
-                        MPI_COMM_WORLD);
-
-                    // Receive the number of requests
-                    MPI_Recv(
-                        &nr_requests,
-                        1,
-                        MPI_INT,
-                        client_id,
-                        tag::WORKLOAD,
-                        MPI_COMM_WORLD,
-                        MPI_STATUS_IGNORE);
-
-                    cout << "Client " << client_id << " has " << nr_requests << " requests" << endl;
-
-                    // If the client has a lower workload
-                    if (nr_requests < min_workload)
+                    clients_with_segment.push_back(client_id);
+                    // Find the client with the smallest time response from last request from request_times
+                    if (request_times[client_id] < min_workload)
                     {
-                        min_workload = nr_requests;
+                        min_workload = request_times[client_id];
                         best_client_id = client_id;
                     }
                 }
             }
 
+            // Print the whole request_times vector
+            cout << "Possible clients to download from and their workloads: " << endl;
+            for (int i = 0; i < (int)(clients_with_segment.size()); i++)
+            {
+                cout << "Client " << clients_with_segment[i] << " has workload " << request_times[clients_with_segment[i]] << endl;
+            }
+
+            cout << "Client " << best_client_id << " was chosen to download from" << endl;
+
             // Request the segment from the best client
-            request_segment_from_best_client(best_client_id, segment, requested_segments);
+            request_segment_from_best_client(best_client_id, segment, requested_segments, request_times);
 
             // Receive the segment from the best client
-            bool res = receive_requested_segment(best_client_id);
+            bool res = receive_requested_segment(best_client_id, request_times);
 
             if (res)
             {
@@ -490,8 +499,18 @@ bool all_files_are_downloaded(peer_info *peer_info_local)
 
 void download_thread_func(
     int rank,
-    peer_info *input)
+    peer_info *input,
+    int numtasks)
 {
+    // Declare an vector for time measurements for requests
+    vector<double> request_times;
+
+    // Initialize the request times vector with numtasks - 1 elements of 0
+    for (int i = 0; i < numtasks; i++)
+    {
+        request_times.push_back(0);
+    }
+
     int download_counter = 0;
     while (!all_files_are_downloaded(input))
     {
@@ -512,7 +531,8 @@ void download_thread_func(
                 client_list_and_segments_owned,
                 file,
                 input,
-                download_counter);
+                download_counter,
+                request_times);
 
             // Check if the file was downloaded
             check_if_file_was_downloaded(

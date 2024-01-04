@@ -98,7 +98,7 @@ void peer(
         exit(1);
     }
 
-    thread download_thread(download_thread_func, rank, input);
+    thread download_thread(download_thread_func, rank, input, numtasks);
     thread upload_thread(upload_thread_func, rank, input);
 
     download_thread.join();

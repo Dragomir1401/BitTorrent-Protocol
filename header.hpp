@@ -59,7 +59,8 @@ void peer(
 
 void download_thread_func(
     int rank,
-    peer_info *input);
+    peer_info *input,
+    int numtasks);
 
 void upload_thread_func(
     int rank,
