@@ -305,8 +305,6 @@ void update_client_list_and_segments_owned(
                     client_list_and_segments_owned_update[client_id].push_back(segment);
                 }
             }
-
-            cout << "Client " << client_id << " has " << segment_counter << " new segments" << endl;
         }
     }
 }
@@ -379,6 +377,8 @@ void find_best_client(
                         tag::WORKLOAD,
                         MPI_COMM_WORLD,
                         MPI_STATUS_IGNORE);
+
+                    cout << "Client " << client_id << " has " << nr_requests << " requests" << endl;
 
                     // If the client has a lower workload
                     if (nr_requests < min_workload)
