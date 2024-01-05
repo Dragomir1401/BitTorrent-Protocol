@@ -50,22 +50,39 @@ enum tag
     ACKNOWLEDGEMENT
 };
 
+/// @brief  Function that encapsulates the tracker's functionality
+/// @param numtasks - Number of MPI tasks
+/// @param rank - Rank of the current task
+/// @param log - Pointer to the logger instance
 void tracker(
     int numtasks,
     int rank,
     logger *log);
 
+/// @brief  Function that encapsulates the peer's functionality
+/// @param numtasks - Number of MPI tasks
+/// @param rank - Rank of the current task
+/// @param log - Pointer to the logger instance
 void peer(
     int numtasks,
     int rank,
     logger *log);
 
+/// @brief  Function that encapsulates the download thread's functionality
+/// @param rank - Rank of the current task
+/// @param input - Pointer to the peer_info instance
+/// @param numtasks - Number of MPI tasks
+/// @param log - Pointer to the logger instance
 void download_thread_func(
     int rank,
     peer_info *input,
     int numtasks,
     logger *log);
 
+/// @brief  Function that encapsulates the upload thread's functionality
+/// @param rank - Rank of the current task
+/// @param input - Pointer to the peer_info instance
+/// @param log - Pointer to the logger instance
 void upload_thread_func(
     int rank,
     peer_info *input,

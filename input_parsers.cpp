@@ -1,5 +1,8 @@
 #include "header.hpp"
 
+/// @brief  Reads the input from the file in<rank>.txt
+/// @param rank - The rank of the peer
+/// @return - A pointer to a peer_info object with the information read from the file
 peer_info *read_peer_input(
     int rank)
 {

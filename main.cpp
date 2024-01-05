@@ -1,5 +1,9 @@
 #include "header.hpp"
 
+/// @brief - The main starting point of the program
+/// @param argc - The number of arguments
+/// @param argv - The arguments
+/// @return - The exit code
 int main(
     int argc,
     char *argv[])

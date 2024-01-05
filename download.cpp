@@ -1,5 +1,7 @@
 #include "header.hpp"
 
+/// @brief  Request a file from the tracker
+/// @param file - the name of the file
 void request(
     string file)
 {
@@ -23,6 +25,10 @@ void request(
         MPI_COMM_WORLD);
 }
 
+/// @brief  Receive the segments owned from the tracker
+/// @param client_list_and_segments_owned - the client list that have the file and the segments owned
+/// @param client - the client id
+/// @param tag - the tag of the message for MPI
 void receive_segments_owned(
     map<int, vector<string>> &client_list_and_segments_owned,
     int client,
@@ -64,6 +70,8 @@ void receive_segments_owned(
     }
 }
 
+/// @brief Receive the file structure from tracker
+/// @param segments_contained - the segments contained in the file
 void receive_file_structure(vector<string> &segments_contained)
 {
     // Receive the number of files which consist the target file
@@ -101,6 +109,10 @@ void receive_file_structure(vector<string> &segments_contained)
         segments_contained.push_back(string(segment));
     }
 }
+
+/// @brief Handle response from tracker to the request command
+/// @param segments_contained - the segments contained in the file
+/// @return - the client list and segments owned
 map<int, vector<string>> handle_response_to_request(vector<string> &segments_contained)
 {
     // Receive the file structure
@@ -139,6 +151,11 @@ map<int, vector<string>> handle_response_to_request(vector<string> &segments_con
     return client_list_and_segments_owned;
 }
 
+/// @brief  Request a segment from the best client
+/// @param best_client_id - the id of the best client to download from
+/// @param segment - the segment to request
+/// @param requested_segments - the set of requested segments
+/// @param request_times - the vector of request times
 void request_segment_from_best_client(
     int best_client_id,
     string segment,
@@ -172,6 +189,10 @@ void request_segment_from_best_client(
     }
 }
 
+/// @brief  Receive the requested segment from the best client
+/// @param best_client_id - the id of the best client to download from
+/// @param request_times - the vector of request times
+/// @return - true if the segment was received, false otherwise
 bool receive_requested_segment(
     int best_client_id,
     vector<double> &request_times)
@@ -214,6 +235,9 @@ bool receive_requested_segment(
     return false;
 }
 
+/// @brief Send an update command to tracker
+/// @param segments_downloaded - the segments downloaded
+/// @param filename - the name of the file
 void send_update_to_tracker(
     vector<string> segments_downloaded,
     string filename)
@@ -260,6 +284,8 @@ void send_update_to_tracker(
     }
 }
 
+/// @brief Handle response from tracker to the update command
+/// @return - the client list and segments owned
 map<int, vector<string>> handle_update_response()
 {
     // Handle response from tracker to the update command
@@ -296,6 +322,10 @@ map<int, vector<string>> handle_update_response()
     return client_list_and_segments_owned;
 }
 
+/// @brief Update the client list and segments owned
+/// @param client_list_and_segments_owned - the client list and segments owned
+/// @param client_list_and_segments_owned_update - the client list and segments owned resulted
+/// @param file - the name of the file
 void update_client_list_and_segments_owned(
     map<int, vector<string>> client_list_and_segments_owned,
     map<int, vector<string>> &client_list_and_segments_owned_update,
@@ -329,6 +359,14 @@ void update_client_list_and_segments_owned(
     }
 }
 
+/// @brief  Find the best client to download from
+/// @param segments_contained - the segments contained in the file
+/// @param client_list_and_segments_owned - the client list and segments owned
+/// @param file - the name of the file
+/// @param peer_info_local - the peer info
+/// @param download_counter - the download counter
+/// @param request_times - the request times from last request
+/// @param log - the structure for logging messages
 void find_best_client(
     vector<string> segments_contained,
     map<int, vector<string>> &client_list_and_segments_owned,
@@ -376,8 +414,6 @@ void find_best_client(
                 int client_id = client.first;
                 vector<string> segments_owned = client.second;
 
-                cout << "client " << client_id << " has " << segments_owned.size() << " segments of file " << file << endl;
-
                 // If the client has the segment
                 if (find(segments_owned.begin(), segments_owned.end(), segment) != segments_owned.end())
                 {
@@ -390,15 +426,6 @@ void find_best_client(
                     }
                 }
             }
-
-            // Print the whole request_times vector
-            cout << "Clients who have the segment of file " << file << endl;
-            for (int i = 0; i < (int)(clients_with_segment.size()); i++)
-            {
-                cout << "Client " << clients_with_segment[i] << " has workload " << request_times[clients_with_segment[i]] << endl;
-            }
-
-            cout << "Client " << best_client_id << " was chosen to download from" << endl;
 
             // Request the segment from the best client
             request_segment_from_best_client(best_client_id, segment, requested_segments, request_times);
@@ -418,6 +445,10 @@ void find_best_client(
     }
 }
 
+/// @brief  Save the downloaded file
+/// @param segments_downloaded - the segments downloaded
+/// @param rank - the rank of the client
+/// @param file - the name of the file
 void save_downloaded_file(
     vector<string> segments_downloaded,
     int rank,
@@ -440,6 +471,11 @@ void save_downloaded_file(
     output_file.close();
 }
 
+/// @brief  Check if the file was downloaded
+/// @param rank - the rank of the client
+/// @param file - the name of the file
+/// @param peer_info_local - the peer info
+/// @param segments_contained - the segments contained in the file
 void check_if_file_was_downloaded(
     int rank,
     string file,
@@ -475,6 +511,9 @@ void check_if_file_was_downloaded(
     }
 }
 
+/// @brief  Check if all files are downloaded
+/// @param peer_info_local - the peer info
+/// @return - true if all files are downloaded, false otherwise
 bool all_files_are_downloaded(peer_info *peer_info_local)
 {
     // Check if all files are downloaded
@@ -499,6 +538,11 @@ bool all_files_are_downloaded(peer_info *peer_info_local)
     return false;
 }
 
+/// @brief  The download thread function
+/// @param rank - the rank of the client
+/// @param input - the peer info given as input
+/// @param numtasks - the number of tasks MPI
+/// @param log - the structure for logging messages
 void download_thread_func(
     int rank,
     peer_info *input,

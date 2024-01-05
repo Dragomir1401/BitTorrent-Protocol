@@ -1,5 +1,9 @@
 #include "header.hpp"
 
+/// @brief  Function that receives the filename from a peer
+/// @param filename - Pointer to the filename
+/// @param from - Source of the filename (peer)
+/// @param tag - Tag of the message
 void receive_filename(
     char *filename,
     int from,
@@ -15,6 +19,10 @@ void receive_filename(
         MPI_STATUS_IGNORE);
 }
 
+/// @brief  Function that receives the number of segments of a file from a peer
+/// @param num_segments - Pointer to the number of segments of the file
+/// @param from - Source of the segments (peer)
+/// @param tag - Tag of the message
 void receive_num_segments(
     int *num_segments,
     int from,
@@ -30,6 +38,11 @@ void receive_num_segments(
         MPI_STATUS_IGNORE);
 }
 
+/// @brief  Function that receives the segments of a file from a peer
+/// @param segments_owned - Vector of strings containing the segments of the file
+/// @param from - Source of the segments (peer)
+/// @param num_segments - Number of segments of the file
+/// @param tag - Tag of the message
 void receive_segments(
     vector<string> &segments_owned,
     int from,
@@ -61,6 +74,11 @@ void receive_segments(
     }
 }
 
+/// @brief  Function that adds the segments to the tracker info
+/// @param tracker_info_local - Pointer to the tracker info object
+/// @param i - Id of the peer
+/// @param filename_string - Name of the file
+/// @param segments_owned - Vector of strings containing the segments of the file
 void add_to_tracker_info(
     tracker_info *tracker_info_local,
     int i,
@@ -83,6 +101,8 @@ void add_to_tracker_info(
     }
 }
 
+/// @brief  Function that sends acks to all peers
+/// @param numtasks - Number of MPI tasks
 void send_acks(
     int numtasks)
 {
@@ -103,6 +123,9 @@ void send_acks(
     }
 }
 
+/// @brief  Function that receives a command from a peer
+/// @param action - Action to be received
+/// @return - Source of the action
 int recv_command(
     int &action)
 {
@@ -122,6 +145,11 @@ int recv_command(
     return status.MPI_SOURCE;
 }
 
+/// @brief  Function that sends the segments of a file to a peer
+/// @param segments_owned - Vector of strings containing the segments of the file
+/// @param dest - Destination of the segments (peer)
+/// @param num_segments_owned - Number of segments owned by the peer
+/// @param tag - Tag of the message
 void send_segments(
     vector<string> segments_owned,
     int dest,
@@ -141,6 +169,10 @@ void send_segments(
     }
 }
 
+/// @brief  Function that sends the segments of a file to a peer
+/// @param number_of_segments - Number of segments of the file
+/// @param segment - Vector of strings containing the segments of the file
+/// @param dest - Destination of the segments (peer)
 void send_info_about_file_structure(int number_of_segments, vector<string> segment, int dest)
 {
     // Send number of segments which the file is divided into
@@ -156,6 +188,9 @@ void send_info_about_file_structure(int number_of_segments, vector<string> segme
     send_segments(segment, dest, number_of_segments, tag::COMMANDS);
 }
 
+/// @brief  Function that handles the request command from a peer
+/// @param source - Source of the request command (peer)
+/// @param tracker_info_local - Pointer to the tracker info object
 void handle_request(
     int source,
     tracker_info *tracker_info_local)
@@ -213,6 +248,9 @@ void handle_request(
     }
 }
 
+/// @brief  Receives the initial holders of the files from all peers
+/// @param numtasks - Number of MPI tasks
+/// @param tracker_info_local - Pointer to the tracker info object
 void receive_initial_holders(
     int numtasks,
     tracker_info *tracker_info_local)
@@ -255,6 +293,9 @@ void receive_initial_holders(
     }
 }
 
+/// @brief  Function that handles the finalize command from a peer
+/// @param source - Source of the finalize command (peer)
+/// @param finished_downloading - Map that stores which peers have finished downloading
 void handle_finalize(
     int source,
     map<int, bool> &finished_downloading)
@@ -263,6 +304,10 @@ void handle_finalize(
     finished_downloading[source] = true;
 }
 
+/// @brief  Function that checks if all peers have finished downloading
+/// @param finished_downloading - Map that stores which peers have finished downloading
+/// @param numtasks  - Number of MPI tasks
+/// @return - True if all peers have finished downloading, false otherwise
 bool all_peers_finalized(
     map<int, bool> finished_downloading,
     int numtasks)
@@ -278,6 +323,9 @@ bool all_peers_finalized(
     return true;
 }
 
+/// @brief  Function that sends a message to all peers to kill the upload thread
+/// @param numtasks - Number of MPI tasks
+/// @param action - Action to be sent
 void send_message_to_upload(
     int numtasks,
     int action)
@@ -294,6 +342,9 @@ void send_message_to_upload(
     }
 }
 
+/// @brief  Function that handles the update command from a peer
+/// @param source - Source of the update command (peer)
+/// @param tracker_info_local - Pointer to the tracker info object
 void handle_update(int source, tracker_info *tracker_info_local)
 {
     // Receive the filename
@@ -379,6 +430,10 @@ void handle_update(int source, tracker_info *tracker_info_local)
     }
 }
 
+/// @brief  Function that implements the tracker logic
+/// @param numtasks - Number of MPI tasks
+/// @param rank - Rank of the current task
+/// @param log - Pointer to the logger instance
 void tracker(
     int numtasks,
     int rank,
@@ -421,7 +476,6 @@ void tracker(
 
         case action::FINALIZE:
             handle_finalize(source, finished_downloading);
-            cout << "Peer " << source << " has finished downloading" << endl;
             break;
 
         default:
@@ -429,8 +483,6 @@ void tracker(
             break;
         }
     }
-
-    cout << "All peers have finished downloading" << endl;
 
     // Send a KILL message on the KILL_UPLOAD_THREAD tag to all peers
     send_message_to_upload(numtasks, action::KILL_UPLOAD_THREAD);

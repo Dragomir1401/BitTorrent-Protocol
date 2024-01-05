@@ -1,9 +1,8 @@
 #include "header.hpp"
 MPI_Request killReq = MPI_REQUEST_NULL;
 int kill_message = 0;
-MPI_Request workloadReq = MPI_REQUEST_NULL;
-int request_workload_message = 0;
 
+/// @brief Function that initializes the kill signal request
 void initialize_kill_signal_request()
 {
     if (killReq == MPI_REQUEST_NULL)
@@ -19,6 +18,8 @@ void initialize_kill_signal_request()
     }
 }
 
+/// @brief  Function that checks if the kill signal has been received
+/// @return - True if the kill signal has been received, false otherwise
 bool check_if_received_kill()
 {
     int flag;
@@ -27,55 +28,15 @@ bool check_if_received_kill()
     return flag && kill_message == action::KILL_UPLOAD_THREAD;
 }
 
-void initialize_workload_request()
-{
-    if (workloadReq == MPI_REQUEST_NULL)
-    {
-        MPI_Irecv(
-            &request_workload_message,
-            1,
-            MPI_INT,
-            MPI_ANY_SOURCE,
-            tag::WORKLOAD,
-            MPI_COMM_WORLD,
-            &workloadReq);
-    }
-}
-
-bool check_and_handle_workload_request(int workload)
-{
-    int flag;
-    MPI_Status status;
-
-    MPI_Test(&workloadReq, &flag, &status);
-
-    if (flag)
-    {
-        // Send the workload to the source
-        MPI_Send(
-            &workload,
-            1,
-            MPI_INT,
-            status.MPI_SOURCE,
-            tag::WORKLOAD,
-            MPI_COMM_WORLD);
-
-        // Reinitialize for next workload request
-        initialize_workload_request();
-        return true;
-    }
-
-    return false;
-}
-
+/// @brief  Function that encapsulates the upload thread's functionality
+/// @param rank - Rank of the current task
+/// @param input - Pointer to the peer_info instance
+/// @param log - Pointer to the logger instance
 void upload_thread_func(int rank, peer_info *input, logger *log)
 {
     std::queue<MPI_Request> requestQueue;
     MPI_Status status;
     int flag;
-
-    // Initialize the workload request
-    // initialize_workload_request();
 
     // Initialize the kill signal request
     initialize_kill_signal_request();
@@ -99,10 +60,8 @@ void upload_thread_func(int rank, peer_info *input, logger *log)
         // Check and process completed requests
         while (!requestQueue.empty())
         {
-            // check_and_handle_workload_request(requestQueue.size());
             if (check_if_received_kill())
             {
-                cout << "Proccess with rank " << rank << " received kill message" << endl;
                 // Process any remaining requests before exiting
                 while (!requestQueue.empty())
                 {

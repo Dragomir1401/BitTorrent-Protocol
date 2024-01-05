@@ -1,5 +1,7 @@
 #include "header.hpp"
 
+/// @brief Sends through MPI the number of files owned by the peer
+/// @param num_files_owned  - Number of files owned
 void send_num_files(
     int num_files_owned)
 {
@@ -12,6 +14,8 @@ void send_num_files(
         MPI_COMM_WORLD);
 }
 
+/// @brief Sends through MPI the segments of a file
+/// @param segments - Vector of strings containing the segments
 void send_segments(
     vector<string> segments)
 {
@@ -28,6 +32,8 @@ void send_segments(
     }
 }
 
+/// @brief Sends through MPI the filews owned by the peer to the tracker
+/// @param input - Pointer to the peer_info object containing the information
 void send_each_file_owned(
     peer_info *input)
 {
@@ -57,6 +63,8 @@ void send_each_file_owned(
     }
 }
 
+/// @brief - Receives ack from tracker to know to start downloading
+/// @param ack - Pointer to the ack string
 void receive_ack(
     char *ack)
 {
@@ -73,6 +81,10 @@ void receive_ack(
     ack[3] = '\0';
 }
 
+/// @brief  Function that encapsulates the peer's functionality
+/// @param numtasks - Number of MPI tasks
+/// @param rank - Rank of the current task
+/// @param log - Pointer to the logger instance
 void peer(
     int numtasks,
     int rank,
