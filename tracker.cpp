@@ -291,7 +291,6 @@ void send_message_to_upload(
             i,
             tag::KILL,
             MPI_COMM_WORLD);
-        cout << "Sent kill message to peer " << i << endl;
     }
 }
 
@@ -382,7 +381,8 @@ void handle_update(int source, tracker_info *tracker_info_local)
 
 void tracker(
     int numtasks,
-    int rank)
+    int rank,
+    logger *log)
 {
     // Declare tracker info
     tracker_info *tracker_info_local = new tracker_info();

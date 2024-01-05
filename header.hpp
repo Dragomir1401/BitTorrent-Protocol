@@ -16,6 +16,7 @@
 #include "peer_info.hpp"
 #include "tracker_info.hpp"
 #include "swarm_info.hpp"
+#include "logger.hpp"
 
 using namespace std;
 
@@ -51,20 +52,24 @@ enum tag
 
 void tracker(
     int numtasks,
-    int rank);
+    int rank,
+    logger *log);
 
 void peer(
     int numtasks,
-    int rank);
+    int rank,
+    logger *log);
 
 void download_thread_func(
     int rank,
     peer_info *input,
-    int numtasks);
+    int numtasks,
+    logger *log);
 
 void upload_thread_func(
     int rank,
-    peer_info *input);
+    peer_info *input,
+    logger *log);
 
 peer_info *read_peer_input(
     int rank);

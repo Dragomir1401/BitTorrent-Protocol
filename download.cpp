@@ -298,7 +298,8 @@ map<int, vector<string>> handle_update_response()
 
 void update_client_list_and_segments_owned(
     map<int, vector<string>> client_list_and_segments_owned,
-    map<int, vector<string>> &client_list_and_segments_owned_update)
+    map<int, vector<string>> &client_list_and_segments_owned_update,
+    string file)
 {
     // Update the client list and segments owned with entries from the update that are not already in the client list and segments owned
     for (auto &client : client_list_and_segments_owned)
@@ -314,14 +315,12 @@ void update_client_list_and_segments_owned(
         // If the client is already in the client list and segments owned
         else
         {
-            int segment_counter = 0;
             // For each segment owned by the client
             for (auto &segment : segments_owned)
             {
                 // If the segment is not already in the client list and segments owned
                 if (find(client_list_and_segments_owned_update[client_id].begin(), client_list_and_segments_owned_update[client_id].end(), segment) == client_list_and_segments_owned_update[client_id].end())
                 {
-                    segment_counter++;
                     // Add the segment to the client list and segments owned
                     client_list_and_segments_owned_update[client_id].push_back(segment);
                 }
@@ -332,11 +331,12 @@ void update_client_list_and_segments_owned(
 
 void find_best_client(
     vector<string> segments_contained,
-    map<int, vector<string>> client_list_and_segments_owned,
+    map<int, vector<string>> &client_list_and_segments_owned,
     string file,
     peer_info *peer_info_local,
     int &download_counter,
-    vector<double> &request_times)
+    vector<double> &request_times,
+    logger *log)
 {
     vector<string> segments_downloaded = peer_info_local->get_segments_downloaded(file);
     set<string> requested_segments;
@@ -347,7 +347,7 @@ void find_best_client(
     for (auto &segment : segments_contained)
     {
         // If the download counter is bigger than 9
-        if (download_counter > 9)
+        if (download_counter > 9 || segments_contained.size() - segments_downloaded.size() < 10)
         {
             // Reset the download counter
             download_counter = 0;
@@ -359,7 +359,7 @@ void find_best_client(
             map<int, vector<string>> client_list_and_segments_owned_extra = handle_update_response();
 
             // Update the client list and segments owned
-            update_client_list_and_segments_owned(client_list_and_segments_owned_extra, client_list_and_segments_owned);
+            update_client_list_and_segments_owned(client_list_and_segments_owned_extra, client_list_and_segments_owned, file);
         }
 
         // If the segment is not already downloaded
@@ -376,6 +376,8 @@ void find_best_client(
                 int client_id = client.first;
                 vector<string> segments_owned = client.second;
 
+                cout << "client " << client_id << " has " << segments_owned.size() << " segments of file " << file << endl;
+
                 // If the client has the segment
                 if (find(segments_owned.begin(), segments_owned.end(), segment) != segments_owned.end())
                 {
@@ -390,7 +392,7 @@ void find_best_client(
             }
 
             // Print the whole request_times vector
-            cout << "Possible clients to download from and their workloads: " << endl;
+            cout << "Clients who have the segment of file " << file << endl;
             for (int i = 0; i < (int)(clients_with_segment.size()); i++)
             {
                 cout << "Client " << clients_with_segment[i] << " has workload " << request_times[clients_with_segment[i]] << endl;
@@ -500,7 +502,8 @@ bool all_files_are_downloaded(peer_info *peer_info_local)
 void download_thread_func(
     int rank,
     peer_info *input,
-    int numtasks)
+    int numtasks,
+    logger *log)
 {
     // Declare an vector for time measurements for requests
     vector<double> request_times;
@@ -532,7 +535,8 @@ void download_thread_func(
                 file,
                 input,
                 download_counter,
-                request_times);
+                request_times,
+                log);
 
             // Check if the file was downloaded
             check_if_file_was_downloaded(

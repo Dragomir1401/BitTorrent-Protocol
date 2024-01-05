@@ -75,7 +75,8 @@ void receive_ack(
 
 void peer(
     int numtasks,
-    int rank)
+    int rank,
+    logger *log)
 {
     // Read input for peer
     peer_info *input = read_peer_input(rank);
@@ -98,8 +99,8 @@ void peer(
         exit(1);
     }
 
-    thread download_thread(download_thread_func, rank, input, numtasks);
-    thread upload_thread(upload_thread_func, rank, input);
+    thread download_thread(download_thread_func, rank, input, numtasks, log);
+    thread upload_thread(upload_thread_func, rank, input, log);
 
     download_thread.join();
     upload_thread.join();

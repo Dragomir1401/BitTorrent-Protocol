@@ -68,7 +68,7 @@ bool check_and_handle_workload_request(int workload)
     return false;
 }
 
-void upload_thread_func(int rank, peer_info *input)
+void upload_thread_func(int rank, peer_info *input, logger *log)
 {
     std::queue<MPI_Request> requestQueue;
     MPI_Status status;

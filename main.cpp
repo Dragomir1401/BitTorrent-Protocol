@@ -7,6 +7,9 @@ int main(
     int numtasks, rank;
     int provided;
 
+    // Create a logger instance
+    logger *log = new logger("log.txt");
+
     MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
     if (provided < MPI_THREAD_MULTIPLE)
     {
@@ -19,12 +22,15 @@ int main(
 
     if (rank == TRACKER_RANK)
     {
-        tracker(numtasks, rank);
+        tracker(numtasks, rank, log);
     }
     else
     {
-        peer(numtasks, rank);
+        peer(numtasks, rank, log);
     }
+
+    // Call the log destructor
+    delete log;
 
     MPI_Finalize();
     return 0;
