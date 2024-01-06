@@ -406,8 +406,6 @@ void find_best_client(
             double min_workload = INT_MAX;
             int best_client_id = -1;
 
-            vector<int> clients_with_segment;
-
             // For each client that has the segment
             for (auto &client : client_list_and_segments_owned)
             {
@@ -417,7 +415,6 @@ void find_best_client(
                 // If the client has the segment
                 if (find(segments_owned.begin(), segments_owned.end(), segment) != segments_owned.end())
                 {
-                    clients_with_segment.push_back(client_id);
                     // Find the client with the smallest time response from last request from request_times
                     if (request_times[client_id] < min_workload)
                     {

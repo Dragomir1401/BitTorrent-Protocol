@@ -471,7 +471,6 @@ void tracker(
 
         case action::UPDATE:
             handle_update(source, tracker_info_local);
-            tracker_info_local->to_file();
             break;
 
         case action::FINALIZE:
